@@ -206,7 +206,7 @@ create table fdl.t_insp (
   donor varchar(225), /* donor */
   graddate date, /* graduate date*/
   crdate date, /* created date*/
-  isactive tinyint default 1,  /* is inspector still avtive  1= active*/
+  isactive char(1) default 'Y',  /* is inspector still avtive  Y= active*/
   inspphoto longblob ,/* inspectore personal photo */
   loginname varchar(225) unique not null,
   loginpassword varchar(225),

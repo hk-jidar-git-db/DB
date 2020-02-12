@@ -10,44 +10,33 @@ $depid 		= null;
 
 $sql = 
 "
-SELECT
-				priv_admin,
-				active, 
-				name, 
-				email,
-				userphoto,
-				issuing_certi,
-				control_certi,
-				'tech' 
-			FROM 
-				s_users 
-			WHERE 
-				login = '$slogin'
-			AND 
-				pswd = '$spswd'
-			UNION
-			SELECT 
-			 'N',
-				CASE isactive
-					WHEN  1 THEN 'Y' 
-					WHEN  2 THEN 'N'
-				END 
-			 active,
-			 fullname AS name, 
-			 email,
-			 inspphoto
-			 issuing_certi,
-			 'N',
-			 'insp' 
-			FROM 
-				t_insp 
-			WHERE 
-				loginname = '$slogin'
-			AND 
-				loginpassword = '$spswd'
+SELECT  
+		priv_admin		, --  0
+		active    		, --  1  
+		name			, --  2  
+		email			, --  3 
+		userphoto		, --  4 
+		issuing_certi	, --  5 
+		control_certi	, --  6 
+		'tech' 			, --  7
+		null   			  --  8
+FROM 
+		s_users 	
+WHERE  login = '$slogin' AND pswd = '$spswd'
+UNION
+SELECT  'N'		 		, 											  	--  0													
+		CASE isactive WHEN  1 THEN 'Y'  WHEN  2 THEN 'N' END  active, 	--  1
+		fullname AS name, 												--  2  
+		email			, 												--  3 
+		inspphoto		, 												--  4 
+		issuing_certi	, 												--  5 
+		'N'				, 												--  6 
+		'insp' 			, 												--  7 
+		inspid			  												--  8		 						
+FROM 
+		t_insp 	
+WHERE 	loginname = '$slogin' AND loginpassword = '$spswd'
 ";
-
-
 
 sc_lookup(rs, $sql);
 	
