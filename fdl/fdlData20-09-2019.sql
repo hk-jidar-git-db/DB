@@ -117,7 +117,7 @@ INSERT INTO fdl.s_apps(app_name, app_type,section, description) VALUES
     ('f_t_certi'         ,'form'  ,6,''  ),
     ('g_t_certi'         ,'cons'  ,6,''  );
 
-INSERT INTO fdl.s_apps_desc(app_name, ar, en) VALUES  
+INSERT INTO fdl.s_apps_desc(app_name, ar, en) VALUES   
     -- help files
     ('fCommodity'        ,'المواد'	                          ,	'Materials'),
     ('fCompanydocs'      ,'مستندات الشركة'	                 ,	'Company documents'),

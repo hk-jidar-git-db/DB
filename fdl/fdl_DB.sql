@@ -208,7 +208,7 @@ create table fdl.t_insp (
   crdate date, /* created date*/
   isactive tinyint default 1,  /* is inspector still avtive  1= active*/
   inspphoto longblob ,/* inspectore personal photo */
-  loginname varchar(225) unique,
+  loginname varchar(225) unique not null,
   loginpassword varchar(225),
   issuing_certi varchar(1),
   foreign key (depid) references h_dep(depid) on update cascade on delete cascade,
@@ -515,6 +515,27 @@ create trigger set_app_to_each_group
         SELECT new.group_id , app_name,@bool,@bool,@bool,@bool,@bool,@bool  FROM s_apps ;
         
     end;
+
+create trigger unique_login_users before insert on fdl.s_users
+    for each row begin
+    declare c int;
+    select count(*) into c from fdl.t_insp where loginname = new.`login`;
+    if (c > 0) then
+        -- abort insert, because bar.username should be not null
+        set new.`login` = null;
+    end if;
+    end;
+
+create trigger unique_login_insp before insert on fdl.t_insp
+    for each row begin
+    declare c int;
+    select count(*) into c from fdl.s_users where `login` = new.loginname;
+    if (c > 0) then
+        -- abort insert, because bar.username should be not null
+        set new.loginname = null;
+    end if;
+    end;
+/*    end triggers*/
 
 use fdl_proj;
 /* projects documents*/

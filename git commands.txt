@@ -1,0 +1,27 @@
+git init
+
+git config --global user.name "hk-jidar-git-db"
+
+git config --global user.email "hk.jidar.git.db@gmail.com"
+
+git config --global user.password "Hakeem1963"
+
+git remote add origin https://github.com/hk-jidar-git-db/DB
+
+git add .
+
+git commit -m "first commit"
+
+git log
+
+git push origin master
+
+
+
+error:
+remote: Permission to  t denied to .
+fatal: unable to access: The requested URL returned error: 403
+
+
+ 
+ 
