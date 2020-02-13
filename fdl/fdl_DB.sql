@@ -468,6 +468,36 @@ CREATE TABLE fdl.s_groups_apps (
 
 --  ----------  End Secuirty Area
 
+/*  CREATE VIEW */
+create view v_login AS
+    SELECT  
+            priv_admin						, --  0
+            active    						, --  1  
+            name							, --  2  
+            email							, --  3 
+            userphoto		AS photo		, --  4 
+            issuing_certi					, --  5 
+            control_certi					, --  6 
+            "tech" 			AS speciality	, --  7   
+            null   			AS inspid  		,  --  8
+            login                           ,
+            pswd            
+    FROM    fdl.s_users 	
+    UNION
+    SELECT  "N"				AS priv_admin	, --  0													
+            isactive 		AS active 		, --  1
+            fullname 		AS name			, --  2  
+            email							, --  3 
+            inspphoto 		AS photo		, --  4 
+            issuing_certi					, --  5 
+            "N"				AS control_certi, --  6 
+            "insp" 			AS speciality	, --  7 
+            inspid			  	  			, --  8
+            loginname       AS login        , -- 9
+            loginpassword   AS pswd	        	 						
+    FROM    fdl.t_insp ;	
+ /*  END CREAT VIEW*/
+
 -- -------------- triggers -------
 
 create  trigger processplan
@@ -535,6 +565,20 @@ create trigger unique_login_insp before insert on fdl.t_insp
         set new.loginname = null;
     end if;
     end;
+
+create trigger groups_prevent_from_deletion
+    before delete on s_groups
+    for each row
+    begin
+        if old.group_id < 11 then -- will only abort deletion for specified ids
+            signal sqlstate '45000' -- "unhandled user-defined exception"
+            -- here comes your custom error message that will be returned by mysql
+            set message_text = 'this record is sacred! you are not allowed to remove it!!';
+        end if;
+    end;
+
+
+
 /*    end triggers*/
 
 use fdl_proj;
