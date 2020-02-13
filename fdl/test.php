@@ -24,15 +24,15 @@ FROM
 		s_users 	
 WHERE  login = '$slogin' AND pswd = '$spswd'
 UNION
-SELECT  'N'		 		, 											  	--  0													
-		CASE isactive WHEN  1 THEN 'Y'  WHEN  2 THEN 'N' END  active, 	--  1
-		fullname AS name, 												--  2  
-		email			, 												--  3 
-		inspphoto		, 												--  4 
-		issuing_certi	, 												--  5 
-		'N'				, 												--  6 
-		'insp' 			, 												--  7 
-		inspid			  												--  8		 						
+SELECT  'N'		 			, --  0													
+		isactive AS active 	, --  1
+		fullname AS name	, --  2  
+		email				, --  3 
+		inspphoto			, --  4 
+		issuing_certi		, --  5 
+		'N'					, --  6 
+		'insp' 				, --  7  speciality
+		inspid			  	  --  8		 						
 FROM 
 		t_insp 	
 WHERE 	loginname = '$slogin' AND loginpassword = '$spswd'
@@ -49,27 +49,16 @@ elseif({rs[0][1]} == 'Y')
 {
 
 	//  [ set loacl variable ]   \\
-	$usr_login		= {login};
-	$usr_priv_admin = ({rs[0][0]} == 'Y') ? true : false;
-	$usr_name		= {rs[0][2]};
-	$usr_email		= {rs[0][3]};
-	$usr_photo		=  base64_encode( {rs[0][4]});
-	$usr_certi		= {rs[0][5]}; 
-	$usr_crl_certi  = ({rs[0][6]} == 'Y') ? 'Y' : 'N';
-
-    $s_depid 		= give_us_your_department($usr_login);
-	$specialty		= ($depid) ? 'dep' : $specialty ;
+	$_SESSION['s']['usr_login']			= {login};
+	$_SESSION['s']['usr_priv_admin'] 	= ({rs[0][0]} == 'Y') ? true : false;
+	$_SESSION['s']['usr_name']			= {rs[0][2]};
+	$_SESSION['s']['usr_email']			= {rs[0][3]};
+	$_SESSION['s']['usr_photo']			= base64_encode( {rs[0][4]});
+	$_SESSION['s']['usr_certi'] 	  	= get_certi_perm({login},{rs[0][5]},'') ;
+	$_SESSION['s']['usr_crl_certi']   	= get_certi_perm($usr_login,{rs[0][6]},'crl') ;
+	$_SESSION['s']['s_depid'] 		    = give_us_your_department({login});
+	$_SESSION['s']['specialty'] 	  	= $_SESSION['s']['s_depid'] ? ? 'dep' : {rs[0][7]} ;
 	
-	//  [ Set local var to Gloabl ]  \\
- 	$_SESSION['s']['usr_priv_admin']  = $usr_priv_admin; 	  
-	$_SESSION['s']['usr_name']  	  = $usr_name; 	  
-	$_SESSION['s']['usr_email'] 	  = $usr_email; 	 
-	$_SESSION['s']['usr_photo'] 	  = $usr_photo; 	
-	$_SESSION['s']['s_depid'] 		  = $s_depid;  
-	$_SESSION['s']['specialty'] 	  = {rs[0][7]} ;
-	$_SESSION['s']['usr_login'] 	  = $usr_login;
-	$_SESSION['s']['usr_certi'] 	  = get_certi_perm($usr_login,$usr_certi,'') ;
-    $_SESSION['s']['usr_crl_certi']   = get_certi_perm($usr_login,$usr_crl_certi,'crl') ;
 	
 }
 else

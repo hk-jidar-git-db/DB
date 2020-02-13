@@ -13,7 +13,7 @@
 /* --------------------------------------------------------------   */
 /* host     : localhost                                             */
 /* port     : 3306                                                  */
-/* DATABASE : fdl                                                   */
+/* DATABASE : fdl ,fdl_proj , fdl_dlrs                              */
 
 
 DROP DATABASE if EXISTS fdl_dlrs;
