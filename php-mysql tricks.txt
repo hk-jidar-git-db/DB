@@ -1,0 +1,1 @@
+IN ('" . implode("','",$_SESSION['s']['s_depid']) . "')
