@@ -265,7 +265,7 @@ create table fdl.t_proj (
     l_c_nr  varchar(225),
     pro_inv_no varchar(225),
     pro_inv_date date,
-    isactive tinyint, -- active = 1 , not active=0
+    isactive tinyint default 1, -- active = 1 , not active=0
     conclusion longtext ,
     is_f_fax_ok tinyint , -- is first fax send it 0= No 1 = Yes 
     is_assign_insp varchar(3) default '000',
@@ -408,6 +408,14 @@ CREATE TABLE fdl.s_users (
     );
 
 alter table fdl.s_users add userphoto longblob, add inspid int, add issuing_certi VARCHAR(1) default 'N', add control_certi varchar(1) default 'N' ;
+
+create table fdl.s_logs(
+    `login` varchar(225) not null,
+    login_time timestamp not null default current_timestamp ,
+    ip  varchar(20),
+    primary key(`login`,login_time),
+    foreign key (`login`) references s_users(`login`) on update cascade on delete cascade
+);
 
 create table fdl.s_apps_sec
     (

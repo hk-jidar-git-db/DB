@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="{SC_LIB_CURRENT}menu/css/menu01.css">
+ <style>
+    .scMenuHHeader .menu .info .left img 
+    {
+        max-width: 72px;
+        border-radius: 100px; 
+    }
+ </style>
+    <div class="right">
+            <ul class="menu">
+                <li>
+                    <a class="menu-toggler" href="#">
+                        {SC_IMG_AVATAR}
+                        <span {NM_CSS_CAB}>{SC_USERNAME}</span>
+                        <i><img src="{SC_LIB_SCRIPTCASE}samples/menu/img/group_expand.png"></i>
+                    </a>
+                    <ul>
+                        <li class="info">
+                            <div class="left">
+                                {SC_IMG_AVATAR}
+                            </div>
+                            
+                            <div class="right">
+                                <h4>
+                                    <span style="display:block;text-align: left;;">{SC_USERNAME}</span>
+                                    <span style="text-align: left;"><small>{SC_USEREMAIL}</small></span>
+                                </h4>
+                            </div>
+                        </li>                        
+                        <li id="sc_id_item_label00" class="menu-item"><a href="{SC_DASH_URL}" {NM_APP_FUN_FRAME}>{SC_DASH_LABEL}</a></li>
+                        <li id="sc_id_item_label01" class="menu-item"><a href="{SC_PWD_URL}" {NM_APP_FUN_FRAME}>{SC_PWD_LABEL}</a></li>
+                        <li id="sc_id_item_label02" class="menu-item"><a href="{SC_LOGOFF_URL02}" target="_parent">{SC_LOGOFF_LABEL}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+<script language="javascript" src="{SC_LIB_SCRIPTCASE}samples/menu/js/menu01.js"></script>

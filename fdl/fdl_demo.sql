@@ -194,8 +194,15 @@ INSERT INTO fdl.t_inspForms (
 -- data -----
 insert into fdl.s_users (login,pswd,name,email,active,activation_code,priv_admin,userphoto,issuing_certi,control_certi)
     values  
-    ('admin',md5('123'),'admin','hk.jidar@gmail.com','Y','','Y',null,'N','Y');
-
+    ('admin',md5('123'),'Welbie'    ,'hk.jidar@gmail.com','Y','','Y',null,'N','Y'),
+    ( 'thec',md5('123'),'fathi'     ,'fathi@gmail.com','Y','','N',null,'Y','N'),
+    (   'fd',md5('123'),'Corie'     ,'cogers1@hubpages.com','Y','','N',null,'N','N'),
+    (   'mt',md5('123'),'Grenville' ,'glamdin2@gravatar.com','Y','','N',null,'N','N'),
+    (   'md',md5('123'),'Nevin'     ,'nfullalove3@liveinternet.ru','Y','','N',null,'N','N'),
+    (   'gm',md5('123'),'Corilla'   ,'cgalway4@gov.uk','Y','','N',null,'N','N'),
+    ( 'insp',md5('123'),'Alvie'     ,'amcturley5@gnu.org','Y','','N',null,'N','N'),
+    ( 'acc',md5('123'),'ibrahim'     ,'ibrahim@yahoo.com','Y','','N',null,'N','Y'),
+    ( 'mix' ,md5('123'),'Leo'        ,'lsaing6@narod.ru','Y','','N',null,'N','N');
 
 INSERT INTO fdl.s_groups (group_id, description, depid, issuing_certi) VALUES
     (1 , 'Administrator'                                , NULL, 'Y'),
@@ -211,8 +218,15 @@ INSERT INTO fdl.s_groups (group_id, description, depid, issuing_certi) VALUES
     
 insert into fdl.s_users_groups (login,group_id)
     values
-    ('admin',1);
-
+    ('admin',1),
+    ('tech' ,3),
+    ('acc'  ,4),
+    ('fd'   ,8),
+    ('mt'   ,3),
+    ('md'   ,6),
+    ('gm'   ,2),
+    ('insp' ,9),
+    ('mix'  ,10);
 UPDATE fdl.s_groups_apps 
     SET 
         priv_access =   'N',
@@ -780,7 +794,7 @@ INSERT INTO  fdl.t_mproj (
 
 -- Project Data 
 insert into fdl.t_proj 
-    (projid ,is_f_fax_ok    ,l_c_nr                 ,code       ,mprojid,projname       ,supid  ,commodity          ,vesselsname                        ,cntryid,origin_goods   ,place_insp ,portdispach                                        ,portdischarge                  ,loadfromdate       ,loadtodate     ,bill_loading_no,insp_date      ,bill_loading_date  ,invoice_no     ,total_packing          ,invoice_date ,pro_inv_no ,pro_inv_date) values	
+    (projid ,is_f_fax_ok    ,l_c_nr                 ,shipmentno ,mprojid,projname       ,supid  ,commodity          ,vesselsname                        ,cntryid,origin_goods   ,place_insp ,portdispach                                        ,portdischarge                  ,loadfromdate       ,loadtodate     ,bill_loading_no,insp_date      ,bill_loading_date  ,invoice_no     ,total_packing          ,invoice_date ,pro_inv_no ,pro_inv_date) values	
     (	 1  ,   '000'       ,'DE23 2053 9469 1879'  ,'TEQ-5212'	,	 1  ,'Gembucket'	,	1	,	'31,34,36,30'	,'Buckeye'	                        ,'UY'	,	'UY'	    ,	'UY'	,'Coralite Ultra Antibacterial Deodorant'	        ,'SoundBody'	                ,	'2019-02-24'	,	'2018-01-31', 'S9031XA'     , 'S9031XA'     ,  '8/21/2020'      ,  '052803525'  ,'300CARTON OF 4.5 KGS' ,'3/1/2019'   ,'900365840', '1/30/2020'             ),
     (	 2  ,   '000'       ,'MT74 NUAE 4609 3UHU'  ,'HUI-3922'	,	 2  ,'Stim'	        ,	2	,	'8,9,3'         ,'Marl Yelloweyed Grass'	        ,'LT'	,	'LT'	    ,	'LT'	,'Eye Wash'	                                        ,'Bacteria Plus'	            ,	'2019-01-05'	,	'2018-05-10', 'T25792A'     , 'T25792A'     ,  '6/10/2019'      ,  '097364013'  ,'300CARTON OF 4.5 KGS' ,'1/17/2020'  ,'992995023', '8/7/2019'             ),
     (	 3  ,   '000'       ,'NL60 MHYD 2587 6293'  ,'RDZ-2696'	,	 3  ,'Stringtough'	,	3	,   '37,53,50,40'	,'Rocky Mountain Clover'	        ,'TW'	,	'TW'	    ,	'TW'	,'Calcitriol'	                                    ,'Isosorbide Mononitrate'	    ,	'2019-04-24'	,	'2018-04-07', 'S82222A'     , 'S82222A'     ,  '7/23/2020'      ,  '653717547'  ,'300CARTON OF 4.5 KGS' ,'12/15/2019' ,'753248953', '11/6/2019'             ),
