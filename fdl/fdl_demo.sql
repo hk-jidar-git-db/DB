@@ -197,11 +197,11 @@ insert into fdl.s_users (login,pswd,name,email,active,activation_code,priv_admin
     ('admin',md5('123'),'Welbie'    ,'hk.jidar@gmail.com','Y','','Y',null,'N','Y'),
     ( 'thec',md5('123'),'fathi'     ,'fathi@gmail.com','Y','','N',null,'Y','N'),
     (   'fd',md5('123'),'Corie'     ,'cogers1@hubpages.com','Y','','N',null,'N','N'),
+    ( 'acc',md5('123'),'ibrahim'     ,'ibrahim@yahoo.com','Y','','N',null,'N','Y'),
     (   'mt',md5('123'),'Grenville' ,'glamdin2@gravatar.com','Y','','N',null,'N','N'),
     (   'md',md5('123'),'Nevin'     ,'nfullalove3@liveinternet.ru','Y','','N',null,'N','N'),
     (   'gm',md5('123'),'Corilla'   ,'cgalway4@gov.uk','Y','','N',null,'N','N'),
     ( 'insp',md5('123'),'Alvie'     ,'amcturley5@gnu.org','Y','','N',null,'N','N'),
-    ( 'acc',md5('123'),'ibrahim'     ,'ibrahim@yahoo.com','Y','','N',null,'N','Y'),
     ( 'mix' ,md5('123'),'Leo'        ,'lsaing6@narod.ru','Y','','N',null,'N','N');
 
 INSERT INTO fdl.s_groups (group_id, description, depid, issuing_certi) VALUES
@@ -216,17 +216,17 @@ INSERT INTO fdl.s_groups (group_id, description, depid, issuing_certi) VALUES
     (9 , 'Inspectores'                                  , NULL, 'N'),
     (10, 'Certification print'                          , NULL, 'N');
     
-insert into fdl.s_users_groups (login,group_id)
+insert into fdl.s_users_groups (`login`,group_id)
     values
     ('admin',1),
-    ('tech' ,3),
-    ('acc'  ,4),
-    ('fd'   ,8),
-    ('mt'   ,3),
-    ('md'   ,6),
-    ('gm'   ,2),
-    ('insp' ,9),
-    ('mix'  ,10);
+    ( 'thec',3),
+    (   'fd',8),
+    (  'acc',4),
+    (   'mt',3),
+    (   'md',6),
+    (   'gm',2),
+    ( 'insp',9),
+    ( 'mix' ,10);
 UPDATE fdl.s_groups_apps 
     SET 
         priv_access =   'N',
@@ -820,12 +820,12 @@ insert into fdl.t_proj
 
 
 update fdl.t_proj
-set projname = 
-    "3000 CARTONS OF 4.5 KG
-    BRUGGEMEAN INSTANT YEAST-VACUM PACKED
-    PRICE/CTN/CTN:EUR 12.80
-    TOTAL AMOUNT:EUR 38,400.00
-    ALL OTHER DETAILS AS PER BENEFICIARYS
-    PRO-INV.NO.2019002567 DD.11.04.2019
-    FOR EUR 38,400.00 CPT BENGHAZI PORT-L" 
+    set projname = 
+        "3000 CARTONS OF 4.5 KG
+        BRUGGEMEAN INSTANT YEAST-VACUM PACKED
+        PRICE/CTN/CTN:EUR 12.80
+        TOTAL AMOUNT:EUR 38,400.00
+        ALL OTHER DETAILS AS PER BENEFICIARYS
+        PRO-INV.NO.2019002567 DD.11.04.2019
+        FOR EUR 38,400.00 CPT BENGHAZI PORT-L" 
 
