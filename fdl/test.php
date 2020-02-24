@@ -1,70 +1,76 @@
- 
 <?
-//    [  Declarations   ]   \\
-
-$slogin 	= sc_sql_injection({login});
-$spswd 		= sc_sql_injection(hash("md5",{pswd}));
-
-$depid 		= null;
-
-
-$sql = 
-"
-SELECT  
-		priv_admin		, --  0
-		active    		, --  1  
-		name			, --  2  
-		email			, --  3 
-		userphoto		, --  4 
-		issuing_certi	, --  5 
-		control_certi	, --  6 
-		'tech' 			, --  7
-		null   			  --  8
-FROM 
-		s_users 	
-WHERE  login = '$slogin' AND pswd = '$spswd'
-UNION
-SELECT  'N'		 			, --  0													
-		isactive AS active 	, --  1
-		fullname AS name	, --  2  
-		email				, --  3 
-		inspphoto			, --  4 
-		issuing_certi		, --  5 
-		'N'					, --  6 
-		'insp' 				, --  7  speciality
-		inspid			  	  --  8		 						
-FROM 
-		t_insp 	
-WHERE 	loginname = '$slogin' AND loginpassword = '$spswd'
-";
-
-sc_lookup(rs, $sql);
-	
-if(count({rs}) == 0)
+ /*  ('admin',1),
+   ( 'thec',3),
+   (   'fd',8),
+   (  'acc',4),
+   (   'mt',3),
+   (   'md',6),
+   (   'gm',2),
+   ( 'insp',9),
+   ( 'mix' ,10);
+*/
+/* any department */
+$grp = array(2,3,6,8);
+$insp_assign = array();
+if(array_diff( $grp , $_SESSION['s']['grp_id']) ) < 4  )
 {
-	sc_log_add('login Fail', {lang_login_fail} . {login});
-	sc_error_message({lang_error_login});
+	array_push($insp_assign ,  '000') ;
 }
-elseif({rs[0][1]} == 'Y')
+
+/* thec manager */
+if( in_array(3, $_SESSION['s']['grp_id']))
+{
+	array_push($insp_assign ,  '100') ;
+}
+
+/* general manager */
+if( in_array(2, $_SESSION['s']['grp_id']))
+{
+	array_push($insp_assign ,  '110') ;
+}
+
+
+
+
+
+if($grp == 3)
+{
+	sc_lookup(query,"SELECT COUNT(*)  FROM t_proj WHERE is_assign_insp = '000' AND isactive = 1");
+}
+// food dep
+elseif($grp == 8 )
+{
+	sc_lookup(query,"SELECT COUNT(*)  FROM t_proj p
+					 LEFT JOIN t_mproj m
+					 ON p.mprojid = m.mprjid
+					 WHERE isactive = 1 
+					 AND p.is_assign_insp IN ('" . implode("','",$insp_assign) . "')
+					 AND m.depid IN ('" . implode("','",$_SESSION['s']['s_depid']) . "')";
+
+
+}
+// acc dep
+elseif($grp == 4 )
 {
 
-	//  [ set loacl variable ]   \\
-	$_SESSION['s']['usr_login']			= {login};
-	$_SESSION['s']['usr_priv_admin'] 	= ({rs[0][0]} == 'Y') ? true : false;
-	$_SESSION['s']['usr_name']			= {rs[0][2]};
-	$_SESSION['s']['usr_email']			= {rs[0][3]};
-	$_SESSION['s']['usr_photo']			= base64_encode( {rs[0][4]});
-	$_SESSION['s']['usr_certi'] 	  	= get_certi_perm({login},{rs[0][5]},'') ;
-	$_SESSION['s']['usr_crl_certi']   	= get_certi_perm($usr_login,{rs[0][6]},'crl') ;
-	$_SESSION['s']['s_depid'] 		    = give_us_your_department({login});
-	$_SESSION['s']['specialty'] 	  	= $_SESSION['s']['s_depid'] ? ? 'dep' : {rs[0][7]} ;
-	
-	
 }
-else
+// mt dep
+elseif($grp == 3 )
 {
-	sc_error_message({lang_error_not_active});
-	reDraw();
-	sc_error_exit();
+
 }
- 
+// md dep
+elseif($grp == 6 )
+{
+
+}
+// gm dep
+elseif($grp == 2 )
+{
+
+}
+// insp dep
+elseif($grp == 9 )
+{
+
+}

@@ -1,58 +1,62 @@
-
-<link rel="stylesheet" href="{SC_LIB_CURRENT}menu/css/menu01.css">
-<link rel="stylesheet" href="{SC_LIB_CURRENT}menu/css/menu02.css">
-<link rel="stylesheet" href="{SC_LIB_CURRENT}libs/bootstrap/css/bootstrap.min.css">
-
-<style>
-   .scMenuHHeader .menu .info .left img 
-   {
-       max-width: 72px;
-       border-radius: 100px; 
-   }
+<html>
+<head>
+<style type="text/css">
+div img {
+    cursor: pointer;
+    border: 1px solid #f00;
+}
 </style>
-   <div class="right">
-           <ul class="menu;display: inline-flex;">
-               <li>
-                   <a class="menu-toggler" href="#">
-                       {SC_IMG_AVATAR}
-                       <span {NM_CSS_CAB}>{SC_USERNAME}</span>
-                       <i><img src="{SC_LIB_SCRIPTCASE}samples/menu/img/group_expand.png"></i>
-                   </a>
-                   <ul>
-                       <li class="info">
-                           <div class="left">
-                               {SC_IMG_AVATAR}
-                           </div>
-                           
-                           <div class="right">
-                               <h4>
-                                   <span style="display:block;text-align: left;;">{SC_USERNAME}</span>
-                                   <span style="text-align: left;"><small>{SC_USEREMAIL}</small></span>
-                               </h4>
-                           </div>
-                       </li>
-                       
-                       <li id="sc_id_item_label00" class="menu-item"><a href="{SC_DASH_URL}" parent="menu"{NM_APP_FUN_FRAME}>{SC_DASH_LABEL}</a></li>
-                       <li id="sc_id_item_label01" class="menu-item"><a href="{SC_PWD_URL}"  parent="menu"{NM_APP_FUN_FRAME}>{SC_PWD_LABEL}</a></li>
-                       <li id="sc_id_item_label02" class="menu-item"><a href="{SC_LOGOFF_URL02}" target="_parent">{SC_LOGOFF_LABEL}</a></li>
-                   </ul>
-               </li>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script>
+function setFormImage(id) {
+    if (id != '' && !document.getElementById('input_'+id)) {
+        var img = document.createElement('input');
+        img.type = 'text';
+        img.id = 'input_'+id;
+        img.name = 'images[]';
+        img.value = id;
 
-               <li>
-                    <span class="glyphicon glyphicon-bell help-tip" aria-hidden="true">
-                        <p><!--You can change the bell's image for one of the 250 glyphs in font format from the Glyphicon Halflings set. 
-                        <br>
-                        You just need to change the class "glyphicon-bell" for "glyphicon-YOU-WANT-TO", like "glyphicon-envelope". 
-                        <br><br>
-                        See more examples at <a class="link" href="http://getbootstrap.com/components/" title="See more">http://getbootstrap.com/components/</a>.-->
-                        {SC_NOTES}
-                        </p>
-                    </span> 
-               </li>				
-               
-               
-               
-           </ul>
-       </div>
+        document.imageSubmit.appendChild(img);
+    }
+}
+$(document).ready(function(){
+    $('#jqueryimages img').click(function(){
+        setFormImage(this.id);
+    });
+});
+</script>
+</head>
+<body>
+<pre><?php 
 
-<script language="javascript" src="{SC_LIB_SCRIPTCASE}samples/menu/js/menu01.js"></script>
+if (count($_GET['images'])) {
+    print_r($_GET['images']);
+}
+
+?></pre>
+<div style="float: left; width: 49%;">
+    <h1>Plain ol' HTML</h1>
+    1. <img src="http://www.gravatar.com/avatar/e1122386990776c6c39a08e9f5fe5648?s=128&d=identicon&r=PG" id="img-1" onclick="setFormImage(this.id)"/>
+    <br/>
+    2. <img src="http://www.gravatar.com/avatar/e1122386990776c6c39a08e9f5fe5648?s=128&d=identicon&r=PG" id="img-2" onclick="setFormImage(this.id)"/>
+    <br/>
+    3. <img src="http://www.gravatar.com/avatar/e1122386990776c6c39a08e9f5fe5648?s=128&d=identicon&r=PG" id="img-3" onclick="setFormImage(this.id)"/>
+    <br/>
+    4. <img src="http://www.gravatar.com/avatar/e1122386990776c6c39a08e9f5fe5648?s=128&d=identicon&r=PG" id="img-4" onclick="setFormImage(this.id)"/>
+</div>
+<div id="jqueryimages" style="float: left; width: 49%;">
+    <h1>jQuery</h1>
+    5. <img src="http://www.gravatar.com/avatar/e1122386990776c6c39a08e9f5fe5648?s=128&d=identicon&r=PG" id="img-5"/>
+    <br/>
+    6. <img src="http://www.gravatar.com/avatar/e1122386990776c6c39a08e9f5fe5648?s=128&d=identicon&r=PG" id="img-6"/>
+    <br/>
+    7. <img src="http://www.gravatar.com/avatar/e1122386990776c6c39a08e9f5fe5648?s=128&d=identicon&r=PG" id="img-7"/>
+    <br/>
+    8. <img src="http://www.gravatar.com/avatar/e1122386990776c6c39a08e9f5fe5648?s=128&d=identicon&r=PG" id="img-8"/>
+</div>
+<h1>Form Submit</h1>
+<form name="imageSubmit" method="get">
+    <input type="submit" value="View Selected"/>
+</form>
+</body>
+</html>
