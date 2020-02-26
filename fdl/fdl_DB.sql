@@ -269,6 +269,7 @@ create table fdl.t_proj (
     conclusion longtext ,
     is_f_fax_ok tinyint , -- is first fax send it 0= No 1 = Yes 
     is_assign_insp varchar(3) default '000',
+    is_insp_ticket varchar(1) default 'N' , -- N: nothing to do W:wait for ticket F:Finish job
     foreign key (supid) references t_sup(supid) on update cascade on delete cascade,
     foreign key (cntryid) references h_country(cntryid) on update cascade on delete cascade,
     foreign key (origin_goods) references h_country(cntryid) on update cascade on delete cascade,
@@ -293,6 +294,7 @@ create table fdl.t_inspprocass(
     localprice decimal(10,3), -- local price
     externelprice decimal(10,3), -- external price
     remarks varchar(225),
+    Approved varchar(2) default '00', -- '10' approve by thechnical manager , '11' approve by general manager
     primary key (projid,inspid),
     foreign key (inspid) references t_insp(inspid) on update cascade on delete cascade,
     foreign key (projid) references t_proj(projid) on update cascade on delete cascade
@@ -394,6 +396,20 @@ create table fdl.t_certi (
     on update cascade 
     on delete cascade
  );
+
+create table fdl.ticket 
+    (
+        arrival  varchar(225),
+        departure varchar(225),
+        tranporter varchar(225),
+        seats_level varchar(1),
+        travel_date timestamp,
+        inspid int ,
+        primary(travel_date,inspid),
+        foreign key (inspid) references t_insp (inspid)
+    );
+
+
 --  -------------  Secuirty Area --
 CREATE TABLE fdl.s_users (
         `login` VARCHAR(255) NOT NULL,
@@ -415,7 +431,7 @@ create table fdl.s_logs(
     ip  varchar(20),
     primary key(`login`,login_time),
     foreign key (`login`) references s_users(`login`) on update cascade on delete cascade
-);
+   );
 
 create table fdl.s_apps_sec
     (
@@ -584,7 +600,14 @@ create trigger groups_prevent_from_deletion
             set message_text = 'this record is sacred! you are not allowed to remove it!!';
         end if;
     end;
-
+create trigger set_is_assign_insp after insert on fdl.t_inspprocass for each row
+ begin
+ declare str varchar(3) ;
+   select is_assign_insp into str from fdl.t_proj where projid = new.projid ;
+   set str = substr(str,1);
+   set str = concat('1',str);
+   update fdl.t_proj set  is_assign_insp = str , is_insp_ticket = 'W' where projid = new.projid ; 
+ end;
 
 
 /*    end triggers*/

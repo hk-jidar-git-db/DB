@@ -200,6 +200,7 @@ insert into fdl.s_users (login,pswd,name,email,active,activation_code,priv_admin
     ( 'acc',md5('123'),'ibrahim'     ,'ibrahim@yahoo.com','Y','','N',null,'N','Y'),
     (   'mt',md5('123'),'Grenville' ,'glamdin2@gravatar.com','Y','','N',null,'N','N'),
     (   'md',md5('123'),'Nevin'     ,'nfullalove3@liveinternet.ru','Y','','N',null,'N','N'),
+    (   'pd',md5('123'),'peter'     ,'peter@oil_gas.com','Y','','N',null,'N','N'),
     (   'gm',md5('123'),'Corilla'   ,'cgalway4@gov.uk','Y','','N',null,'N','N'),
     ( 'insp',md5('123'),'Alvie'     ,'amcturley5@gnu.org','Y','','N',null,'N','N'),
     ( 'mix' ,md5('123'),'Leo'        ,'lsaing6@narod.ru','Y','','N',null,'N','N');
@@ -219,12 +220,13 @@ INSERT INTO fdl.s_groups (group_id, description, depid, issuing_certi) VALUES
 insert into fdl.s_users_groups (`login`,group_id)
     values
     ('admin',1),
-    ( 'thec',3),
-    (   'fd',8),
-    (  'acc',4),
-    (   'mt',3),
-    (   'md',6),
     (   'gm',2),
+    ( 'thec',3),
+    (  'acc',4),
+    (   'mt',5),
+    (   'md',6),
+    (   'pd',7),
+    (   'fd',8),
     ( 'insp',9),
     ( 'mix' ,10);
 UPDATE fdl.s_groups_apps 
