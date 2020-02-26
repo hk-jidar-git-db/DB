@@ -306,11 +306,36 @@ create table fdl.t_inspprocass(
     m_v varchar(100), -- The master of M/V 
     bert_port varchar(100), -- Berthing Port
     lett_date date, -- Date
+    -- Certificate of fitness 
+    cert_no varchar(20), -- certification number
+    vessel_owner varchar(100), -- vessel owner
+    call_sign varchar(100), -- names use by the vessel internally
+    flag varchar(100), -- the vessel flag 
+    loading_port varchar(100), -- Loading port
+    imo_no varchar(10), -- vessel number
+    -- CONTAINER’S INSPECTION REPORT
+    cont_no tinyint, -- Nº of containers inspected
+    cont_type varchar(50),-- Type of containers: - 20ft / 40ft / Reefer cont. / Open top …etc
+    cont_rej tinyint,-- Nº of container rejected
+    rej_reas varchar(225),-- Reasons
+    cont_action varchar(225),-- Action Taken
+    cont_status varchar(6) default '000000', -- Containers Status	Door	Locks	Ceiling	Walls	Floors	Ventilators
     primary key (projid,inspid),
     foreign key (inspid) references t_insp(inspid) on update cascade on delete cascade,
     foreign key (projid) references t_proj(projid) on update cascade on delete cascade
 );
 
+/* table of containers*/
+create table fdl.t_cont
+    (
+        sn tinyint not null,
+        projid int not null,
+        cont_no varchar(3),
+        seal_no varchar(3),
+        remarks varchar(225),
+        primary key(sn,projid),
+        foreign key (projid) references fdl.t_proj(projid)
+    );
 /* inspectore planning */
 create table fdl.t_inspplann (
     chk tinyint , /* checkbox 0= false ; 1=true */
@@ -471,6 +496,10 @@ pallets -- No. of pallets, containers, Drums, etc.
 
     );
 */
+ create table t_final_report
+ (
+     
+ );
 --  -------------  Secuirty Area --
 CREATE TABLE fdl.s_users (
         `login` VARCHAR(255) NOT NULL,
@@ -662,12 +691,18 @@ create trigger groups_prevent_from_deletion
     end;
 create trigger set_is_assign_insp after insert on fdl.t_inspprocass for each row
  begin
- declare str varchar(3) ;
+    declare str varchar(3) ;
    select is_assign_insp into str from fdl.t_proj where projid = new.projid ;
    set str = substr(str,1);
    set str = concat('1',str);
    update fdl.t_proj set  is_assign_insp = str , is_insp_ticket = 'W' where projid = new.projid ; 
  end;
+create trigger sn_containers before insert on fdl.t_cont for each row
+    begin
+        declare id tinyint ;
+        select count(*) into id from fdl.t_cont where projid = new.projid;
+        set new.sn = id + 1 ;
+    end;
 
 
 /*    end triggers*/
