@@ -294,11 +294,18 @@ create table fdl.t_inspprocass(
     externelprice decimal(10,3), -- external price
     remarks varchar(225),
     Approved varchar(2) default '00', -- '10' approve by thechnical manager , '11' approve by general manager
+    -- ARRIVAL OF INSPECTOR
     arrive_date date, -- arriveing date 
     startdate date, -- after arriveing starting date
+    -- MEETING OF AGENDA 
     meeting varchar(9) default '000000000' , -- Y,N Meeting Agenda
     program_dates longtext, -- The program of inspection agreed 
-    is_declared varchar(1), -- Y,yes N,no
+    -- DECLARATION OF RESPONABILITY AND INSPECTION FEES
+    declared varchar(225), -- on behalf declaration
+    -- LETTER OF PERMISSION
+    m_v varchar(100), -- The master of M/V 
+    bert_port varchar(100), -- Berthing Port
+    lett_date date, -- Date
     primary key (projid,inspid),
     foreign key (inspid) references t_insp(inspid) on update cascade on delete cascade,
     foreign key (projid) references t_proj(projid) on update cascade on delete cascade
@@ -415,8 +422,55 @@ create table fdl.t_ticket
         foreign key (departure) references h_country (cntryid),
         foreign key (inspid) references t_insp (inspid)
     );
+create table fdl.t_daily_report
+    (
+        inspid int not null,
+        projid int not null,
+        hotel_tel varchar(20),
+        hotel_fax varchar(20),
+        room_no varchar(20),
+        rep_date date,
+        report longtext,
+        photo longblob,
+        foreign key (inspid) references t_insp(inspid),
+        foreign key (projid) references t_proj(projid),
+        primary key(inspid,projid)
+    );
+/*    
+create table fdl.t_ship_survey -- SHIPPING SURVEY
+    (
+
+-- 1-	Ships specification
+vessel_type varchar(225), -- Vessel type
+call_sign varchar(225), -- Call sign
+loading_port varchar(225), -- Loading port
+loading_rate varchar(225), -- Loading rate
+Date_place_built varchar(225), -- Date& place of  built	
+imo_no varchar(225),	 -- IMO No	
+loading_date date,-- Loading date	Fm...  .. .. hr to ….hr
+discharging_rate varchar(10), -- Discharging rate	
+-- 2- Shipment details:-
+owner_style varchar(225),-- Owner / charter full style
+loading_style varchar(225),-- Loading port shipping agent full style
+Discharging_style varchar(225),-- Discharging port shipping agent full style
+Stevedoring varchar(225),-- Stevedoring obligation
+Supplying varchar(225),-- Supplying limits  : (Direct shipment – Partial shipment – Transit shipment )
+-- 3-	Cargo information:-
+Cargo_type varchar(225), -- Cargo type                                                                      
+pallets -- No. of pallets, containers, Drums, etc.
+-- Measurement of each
+-- Weight of each
+-- Total measurement
+-- Total weight
+-- Packing remarks requested by consignee
+-- Stowing limits (On Deck –Under Deck –One/Two Tiers)
+-- 4 – Documentation:-
+-- L/C
+-- B/L
 
 
+    );
+*/
 --  -------------  Secuirty Area --
 CREATE TABLE fdl.s_users (
         `login` VARCHAR(255) NOT NULL,
@@ -494,7 +548,6 @@ CREATE TABLE fdl.s_groups_apps (
         foreign key (group_id) references s_groups (group_id) on delete cascade,
         foreign key (app_name) references s_apps (app_name) on delete cascade
     );
-
 
 
 --  ----------  End Secuirty Area
