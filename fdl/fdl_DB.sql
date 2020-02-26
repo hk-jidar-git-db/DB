@@ -289,16 +289,21 @@ create table fdl.t_inspprocass(
     timeing tinyint,/* commitment to execution time */
     cooperation tinyint,/* cooperation with others */
     overall tinyint, /* overall assessment */
-    startdate date, -- starting date
     perioddays tinyint, -- how long stay
     localprice decimal(10,3), -- local price
     externelprice decimal(10,3), -- external price
     remarks varchar(225),
     Approved varchar(2) default '00', -- '10' approve by thechnical manager , '11' approve by general manager
+    arrive_date date, -- arriveing date 
+    startdate date, -- after arriveing starting date
+    meeting varchar(9) default '000000000' , -- Y,N Meeting Agenda
+    program_dates longtext, -- The program of inspection agreed 
+    is_declared varchar(1), -- Y,yes N,no
     primary key (projid,inspid),
     foreign key (inspid) references t_insp(inspid) on update cascade on delete cascade,
     foreign key (projid) references t_proj(projid) on update cascade on delete cascade
 );
+
 /* inspectore planning */
 create table fdl.t_inspplann (
     chk tinyint , /* checkbox 0= false ; 1=true */
@@ -397,15 +402,17 @@ create table fdl.t_certi (
     on delete cascade
  );
 
-create table fdl.ticket 
+create table fdl.t_ticket 
     (
-        arrival  varchar(225),
-        departure varchar(225),
+        arrival  char(2),
+        departure char(2),
         tranporter varchar(225),
         seats_level varchar(1),
         travel_date timestamp,
         inspid int ,
-        primary(travel_date,inspid),
+        primary key (travel_date,inspid),
+        foreign key (arrival) references h_country (cntryid),
+        foreign key (departure) references h_country (cntryid),
         foreign key (inspid) references t_insp (inspid)
     );
 
