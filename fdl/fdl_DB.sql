@@ -1,19 +1,19 @@
 ﻿
 
-/* start for solusion                                               */
-/* ------------------------------------------------------------     */
-/* 21-07-2019                                                       */
-/* eng.abduelhakeem m ajaj  & eng.zakaria joma elshrief             */
-/* tripoli - libys                                                  */
-/*                                                                  */
-/* inspection DATABASE version 1.0.0                                */
-/* mysql DATABASE                                                   */
-/*                                                                  */
-/*                                                                  */
-/* --------------------------------------------------------------   */
-/* host     : localhost                                             */
-/* port     : 3306                                                  */
-/* DATABASE : fdl ,fdl_proj , fdl_dlrs                              */
+--   start for solusion                                               
+--   ------------------------------------------------------------     
+--   21-07-2019                                                       
+--   eng.abduelhakeem m ajaj  & eng.zakaria joma elshrief             
+--   tripoli - libys                                                  
+--                                                                    
+--   inspection DATABASE version 1.0.0                                
+--   mysql DATABASE                                                   
+--                                                                    
+--                                                                    
+--   --------------------------------------------------------------   
+--   host     : localhost                                             
+--   port     : 3306                                                  
+--   DATABASE : fdl ,fdl_proj , fdl_dlrs                              
 
 
 DROP DATABASE if EXISTS fdl_dlrs;
@@ -34,59 +34,59 @@ CREATE DATABASE if NOT EXISTS fdl
 
  use fdl;
 
-/* inspections forms to be ues in all the inspections */
+--   inspections forms to be ues in all the inspections 
 create table fdl.t_inspforms (
     formid varchar(225) not null primary key,
     formname varchar(225) unique,
     isactive tinyint
  );
-/* countrys table */
+--   countrys table 
 create table fdl.h_country (
     cntryid char(2) not null primary key,
     cntryname varchar(225) unique
  );
-/* company table*/
+--   company table
 create table fdl.t_company (
     id varchar(225) not null primary key,
     comapnyname varchar(225),
-    domain varchar(225), /* company scope of business */
-    logo longblob, /* company logo */
-    addr varchar(225), /* company adrress */
-    tel varchar(225), /* company telephone */
-    fax varchar(225), /* company fax */
-    mobile varchar(225), /* company mobile */
-    web varchar(225), /* company website */
-    email varchar(225), /* company email */
-    gm varchar(225), /* general manger name */
-    ceo varchar(225), /* ceo name */
-    contact varchar(225), /* person how to contact */
-    crr varchar(225), /* chamber room registration number */
-    cr varchar(225), /* commercial register */
-    lic varchar(225), /* license number */
-    wh varchar(225), /* working hours */
-    insu varchar(225) /* insurance number */
+    domain varchar(225), --   company scope of business 
+    logo longblob, --   company logo 
+    addr varchar(225), --   company adrress 
+    tel varchar(225), --   company telephone 
+    fax varchar(225), --   company fax 
+    mobile varchar(225), --   company mobile 
+    web varchar(225), --   company website 
+    email varchar(225), --   company email 
+    gm varchar(225), --   general manger name 
+    ceo varchar(225), --   ceo name 
+    contact varchar(225), --   person how to contact 
+    crr varchar(225), --   chamber room registration number 
+    cr varchar(225), --   commercial register 
+    lic varchar(225), --   license number 
+    wh varchar(225), --   working hours 
+    insu varchar(225) --   insurance number 
  );
 
-INSERT  INTO fdl.t_company (id )VALUES( '104');
+INSERT  INTO fdl.t_company (id )VALUES( 'AIC');
 
-/* department list for inspector select*/
+--   department list for inspector select
 create table fdl.h_dep (
-  depid char(2) not null primary key, /* mt,fd,md,pd */
+  depid char(2) not null primary key, --   mt,fd,md,pd 
   depname varchar(225) unique
  );
-/* commodity */
+--   commodity 
 create table fdl.h_commodity (
     comid int auto_increment not null primary key,
     comname varchar(225) unique,
     depid varchar(2),
     foreign key (depid) references fdl.h_dep(depid) on delete cascade on update cascade
  );
-/* qualifications list for inspector select*/
+--   qualifications list for inspector select
 create table fdl.h_quali (
   qualiid int auto_increment not null primary key,
   qualiname varchar(225) unique
  );
-/* customers table () */
+--   customers table () 
 create table fdl.t_cust (
     custid int auto_increment not null primary key,
     code varchar(20),
@@ -138,7 +138,7 @@ create table fdl.t_sup (
      foreign key (supid) references fdl.t_sup(supid) on update cascade on delete cascade
  );
 
-/* preplanning items for inspection */
+--   preplanning items for inspection 
 create table fdl.t_insp_sys
     (
         id int auto_increment not null primary key,
@@ -186,28 +186,30 @@ create table fdl.t_p_items (
     foreign key (sec_id) references fdl.t_p_sect(sec_id) on update cascade on delete cascade
  );
 
-/* inspector's table */
+--   inspector's table 
 create table fdl.t_insp (
   inspid int auto_increment not null primary key,
-  insp_type char(1), /* p = personal , s = subcontract */
-  fullname varchar(100) unique,
+  insp_type char(1), --   p = personal , s = subcontract 
+  first_name varchar(20),
+  mid_name varchar(20),
+  last_name varchar(20),
   passport varchar(225),
   idcard varchar(225),
   country char(2),
-  depid varchar(2) not null, /* department of inspector*/
-  qualiid int not null, /* qualifications*/
-  fld_exp tinyint, /* field experiance*/
-  insp_exp tinyint, /* experince in the inspections*/
-  contid varchar(225), /* contract number*/
-  mobile varchar(225), /* mobile number*/
-  email varchar(225), /* inspector email*/
+  depid varchar(2) not null, --   department of inspector
+  qualiid int not null, --   qualifications
+  fld_exp tinyint, --   field experiance
+  insp_exp tinyint, --   experince in the inspections
+  contid varchar(225), --   contract number
+  mobile varchar(225), --   mobile number
+  email varchar(225), --   inspector email
   fax varchar(225),
   phone varchar(225),
-  donor varchar(225), /* donor */
-  graddate date, /* graduate date*/
-  crdate date, /* created date*/
-  isactive char(1) default 'Y',  /* is inspector still avtive  Y= active*/
-  inspphoto longblob ,/* inspectore personal photo */
+  donor varchar(225), --   donor 
+  graddate date, --   graduate date
+  crdate date, --   created date
+  isactive char(1) default 'Y',  --   is inspector still avtive  Y= active
+  inspphoto longblob ,--   inspectore personal photo 
   loginname varchar(225) unique not null,
   loginpassword varchar(225),
   issuing_certi varchar(1),
@@ -216,48 +218,49 @@ create table fdl.t_insp (
   foreign key (country) references h_country(cntryid) on update cascade on delete cascade
  );
 
-/* mainprojects */
+--   mainprojects 
 create table fdl.t_mproj (
     mprjid int auto_increment not null primary key,
     code varchar(225) UNIQUE,
     depid varchar(2) not null,
     projname varchar(225),
-    lcreditno varchar(225), /* letter of credit no */
-    subjpurchorderno varchar(225), /* subject of purchase order number */
-    ms varchar(225),   /*   made to your favor by :m/s */
-    totalaccred decimal(15,3), /* the total value of the accreditation */
-    commodity varchar(225) not null, /* commodity */
-    qyagrosswt int, /* quantity: gross weight  */
-    qyanetwt int, /* quantity: net weight */
-    custid int not null, /* open by a party */
+    lcreditno varchar(225), --   letter of credit no 
+    subjpurchorderno varchar(225), --   subject of purchase order number 
+    ms varchar(225),   --     made to your favor by :m/s 
+    totalaccred decimal(15,3), --   the total value of the accreditation 
+    commodity varchar(225) not null, --   commodity 
+    qyagrosswt int, --   quantity: gross weight  
+    qyanetwt int, --   quantity: net weight 
+    custid int not null, --   open by a party 
     foreign key (custid) references t_cust(custid) on update cascade on delete cascade,
     foreign key (depid) references fdl.h_dep(depid) on update cascade on delete cascade
  );
 
-/* projects  */
+--   projects  
 create table fdl.t_proj (
     projid int auto_increment not null primary key,
     code varchar(225) UNIQUE,
     projname varchar(225),
-    shipmentno varchar(225), /* shipment number */
-    shipmentvalue decimal(10,3), /* the shimpment price */
-    supid int not null, /* for a company */
-    commodity varchar(225) not null, /* commodity */
-    vesselsname varchar(225), /* vessels name */
-    cntryid char(2) not null, /* national  */
+    shipmentno varchar(225), --   shipment number 
+    shipmentvalue decimal(10,3), --   the shimpment price 
+    currency varchar(3), -- currency
+    supid int not null, --   for a company 
+    commodity int not null, --   commodity 
+    vesselsname varchar(225), --   vessels name 
+    cntryid char(2) not null, --   national  
     town varchar(225),
-    origin_goods char(2) not null, /*origin of goods*/
-    place_insp char(2), /* place of inspection*/
+    origin_goods char(2) not null, --  origin of goods
+    place_insp char(2), --   place of inspection
     insp_date date,  -- inspection date 
-    portdispach varchar(225), /*  port of dispatch/loadin */
-    portdischarge varchar(225), /* port of discharge */
-    loadfromdate date, /* loading date: from */
-    loadtodate date, /* loading date: to */
-    qyagrosswt decimal(15,3), /* quantity: gross weight  */
-    qyanetwt decimal(15,3), /* quantity: net weight */
-    totalaccred decimal(15,3), /* the total value of the accreditation */
+    portdispach varchar(225), --    port of dispatch/loadin 
+    portdischarge varchar(225), --   port of discharge 
+    loadfromdate date, --   loading date: from 
+    loadtodate date, --   loading date: to 
+    qyagrosswt decimal(15,3), --   quantity: gross weight  
+    qyanetwt decimal(15,3), --   quantity: net weight 
+    totalaccred decimal(15,3), --   the total value of the accreditation 
     mprojid int not null,
-    bill_loading_no varchar(225), /*bill of loadin no.*/
+    bill_loading_no varchar(225), --  bill of loadin no.
     bill_loading_date date,
     invoice_no varchar(225),
     invoice_date date,
@@ -270,25 +273,26 @@ create table fdl.t_proj (
     is_f_fax_ok tinyint , -- is first fax send it 0= No 1 = Yes 
     is_assign_insp varchar(3) default '000',
     is_insp_ticket varchar(1) default 'N' , -- N: nothing to do W:wait for ticket F:Finish job
+    foreign key (commodity) references h_commodity(comid) on update cascade,
     foreign key (supid) references t_sup(supid) on update cascade on delete cascade,
     foreign key (cntryid) references h_country(cntryid) on update cascade on delete cascade,
     foreign key (origin_goods) references h_country(cntryid) on update cascade on delete cascade,
     foreign key (mprojid) references t_mproj(mprjid) on update cascade on delete cascade
  );
 
-/* evaluation of the operations of the inspector */
+--   evaluation of the operations of the inspector 
 create table fdl.t_inspprocass(
     procdate date not null,
-    insp_type char(1), /* p = personal , s = subcontract */
+    insp_type char(1), --   p = personal , s = subcontract 
     is_boss char(1),
     projid int not null,
-    whysub  tinyint, /* the necessity that necessitates a company to inspect the subsoil is: */
-    inspid int not null, /* inspectore */
-    condation tinyint,/* commitment to contractual terms */
-    implimint tinyint,/* commitment to process implementation */
-    timeing tinyint,/* commitment to execution time */
-    cooperation tinyint,/* cooperation with others */
-    overall tinyint, /* overall assessment */
+    whysub  tinyint, --   the necessity that necessitates a company to inspect the subsoil is: 
+    inspid int not null, --   inspectore 
+    condation tinyint,--   commitment to contractual terms 
+    implimint tinyint,--   commitment to process implementation 
+    timeing tinyint,--   commitment to execution time 
+    cooperation tinyint,--   cooperation with others 
+    overall tinyint, --   overall assessment 
     perioddays tinyint, -- how long stay
     localprice decimal(10,3), -- local price
     externelprice decimal(10,3), -- external price
@@ -320,12 +324,38 @@ create table fdl.t_inspprocass(
     rej_reas varchar(225),-- Reasons
     cont_action varchar(225),-- Action Taken
     cont_status varchar(6) default '000000', -- Containers Status	Door	Locks	Ceiling	Walls	Floors	Ventilators
+    -- FINAL INSPECTION REPORT
+    -- 1-VISUAL INSPECTION
+    ssc varchar(225), -- Supplier’s storing conditions
+    ma varchar(225), -- Material appearance
+    pq varchar(225),-- Packaging quality
+    cc varchar(225),-- Containers condition
+    sample_standard varchar(225),-- Sample taken according the standards
     primary key (projid,inspid),
     foreign key (inspid) references t_insp(inspid) on update cascade on delete cascade,
     foreign key (projid) references t_proj(projid) on update cascade on delete cascade
 );
+-- SAMPLES VERIFIED, ANALYSED AND TESTED
+-- The sample could be, raw material, finished product, , document, record, drawing, And/or etc.
+create table fdl.t_samples
+    (
+        id varchar(20) not null,
+        sn tinyint not null,
+        comid int, -- commidty
+        qya  int , -- quantity of samples
+        inspid int, -- inspector name
+        projid int, -- l/c no.
+        temp varchar(5), -- condation temp.
+        humm varchar(5), -- condation hummidity
+        light varchar(5), -- condation light
+        place varchar(100), -- place of sample,
+        primary key(id,sn),
+        foreign key (comid) references h_commodity(comid),
+        foreign key (inspid) references t_insp(inspid),
+        foreign key (projid) references t_proj(projid)
+    );
 
-/* table of containers*/
+--   table of containers
 create table fdl.t_cont
     (
         sn tinyint not null,
@@ -336,9 +366,9 @@ create table fdl.t_cont
         primary key(sn,projid),
         foreign key (projid) references fdl.t_proj(projid)
     );
-/* inspectore planning */
+--   inspectore planning 
 create table fdl.t_inspplann (
-    chk tinyint , /* checkbox 0= false ; 1=true */
+    chk tinyint , --   checkbox 0= false ; 1=true 
     projid int not null,
     planid tinyint not null,
     sdate datetime,
@@ -352,9 +382,9 @@ create table fdl.t_inspplann (
     foreign key (planid) references t_p_items(item_id) on update cascade on delete cascade
  );
 
-/* [  Document tables  ] */
+--   [  Document tables  ] 
 
-/* company docs */
+--   company docs 
 create table fdl.t_companydocs (
     id int not null auto_increment primary key,
     doc_type tinyint,
@@ -364,10 +394,10 @@ create table fdl.t_companydocs (
     foreign key (companyid) references t_company(id) on update cascade on delete cascade
  );
 
-/* [ New Document tables  ] */
+--   [ New Document tables  ] 
 
 
-/* documents table */
+--   documents table 
 create table fdl.t_inspformdocs (
     id int auto_increment not null primary key,
     formid varchar(225) not null,
@@ -375,7 +405,7 @@ create table fdl.t_inspformdocs (
     copyfile longblob,
     foreign key (formid) references t_inspforms(formid) on update cascade on delete cascade
  );
-/* inspection doc */
+--   inspection doc 
 create table fdl.t_inspdocs (
         id int auto_increment not null primary key,
         inspid int not null,
@@ -461,45 +491,43 @@ create table fdl.t_daily_report
         foreign key (projid) references t_proj(projid),
         primary key(inspid,projid)
     );
-/*    
+--      
 create table fdl.t_ship_survey -- SHIPPING SURVEY
     (
-
--- 1-	Ships specification
-vessel_type varchar(225), -- Vessel type
-call_sign varchar(225), -- Call sign
-loading_port varchar(225), -- Loading port
-loading_rate varchar(225), -- Loading rate
-Date_place_built varchar(225), -- Date& place of  built	
-imo_no varchar(225),	 -- IMO No	
-loading_date date,-- Loading date	Fm...  .. .. hr to ….hr
-discharging_rate varchar(10), -- Discharging rate	
--- 2- Shipment details:-
-owner_style varchar(225),-- Owner / charter full style
-loading_style varchar(225),-- Loading port shipping agent full style
-Discharging_style varchar(225),-- Discharging port shipping agent full style
-Stevedoring varchar(225),-- Stevedoring obligation
-Supplying varchar(225),-- Supplying limits  : (Direct shipment – Partial shipment – Transit shipment )
--- 3-	Cargo information:-
-Cargo_type varchar(225), -- Cargo type                                                                      
-pallets -- No. of pallets, containers, Drums, etc.
--- Measurement of each
--- Weight of each
--- Total measurement
--- Total weight
--- Packing remarks requested by consignee
--- Stowing limits (On Deck –Under Deck –One/Two Tiers)
--- 4 – Documentation:-
--- L/C
--- B/L
+        projid int not null primary key,
+        -- 1-	Ships specification
+        vessel_type varchar(225), -- Vessel type
+        call_sign varchar(225), -- Call sign
+        loading_port varchar(225), -- Loading port
+        loading_rate varchar(225), -- Loading rate
+        Date_place_built varchar(225), -- Date& place of  built	
+        imo_no varchar(225),	 -- IMO No	
+        loading_date date,-- Loading date	Fm...  .. .. hr to ….hr
+        discharging_rate varchar(10), -- Discharging rate	
+        -- 2- Shipment details:-
+        owner_style varchar(225),-- Owner / charter full style
+        loading_style varchar(225),-- Loading port shipping agent full style
+        Discharging_style varchar(225),-- Discharging port shipping agent full style
+        Stevedoring varchar(225),-- Stevedoring obligation
+        Supplying varchar(225),-- Supplying limits  : (Direct shipment – Partial shipment – Transit shipment )
+        -- 3-	Cargo information:-
+        Cargo_type varchar(225), -- Cargo type 
+        pallets tinyint,-- No. of pallets, containers, Drums, etc.
+        p_measur varchar(225),-- Measurement of each
+        p_weight varchar(225),-- Weight of each
+        p_total_m varchar(225),-- Total measurement
+        p_total_w varchar(225),-- Total weight
+        p_remark varchar(225),-- Packing remarks requested by consignee
+        -- Stowing limits (On Deck –Under Deck –One/Two Tiers)
+        -- 4 – Documentation:-
+        -- L/C
+        -- B/L
+        foreign key (projid) references t_proj(projid)                                                                     
 
 
     );
-*/
- create table t_final_report
- (
-     
- );
+
+
 --  -------------  Secuirty Area --
 CREATE TABLE fdl.s_users (
         `login` VARCHAR(255) NOT NULL,
@@ -555,7 +583,6 @@ CREATE TABLE fdl.s_groups (
     UNIQUE KEY description (description)
     );
 alter table fdl.s_groups add depid varchar(2),add issuing_certi VARCHAR(1) default 'N', add control_certi varchar(1) default 'N' ;
-
 CREATE TABLE fdl.s_users_groups (
         `login` VARCHAR(255) NOT NULL,
         group_id int(11) NOT NULL,
@@ -579,9 +606,8 @@ CREATE TABLE fdl.s_groups_apps (
     );
 
 
---  ----------  End Secuirty Area
-
-/*  CREATE VIEW */
+--  [----------  End Secuirty Area-----]
+--    CREATE VIEW 
 create view v_login AS
     SELECT  
             priv_admin						, --  0
@@ -609,10 +635,9 @@ create view v_login AS
             loginname       AS login        , -- 9
             loginpassword   AS pswd	        	 						
     FROM    fdl.t_insp ;	
- /*  END CREAT VIEW*/
+ --    END CREAT VIEW
 
 -- -------------- triggers -------
-
 create  trigger processplan
     after insert on t_proj for each row 
     begin
@@ -703,17 +728,30 @@ create trigger sn_containers before insert on fdl.t_cont for each row
         select count(*) into id from fdl.t_cont where projid = new.projid;
         set new.sn = id + 1 ;
     end;
+create trigger smapl_id before insert on fdl.t_samples for each row
+ begin
+   declare company varchar(5);
+   declare insp varchar(100);
+   declare dep varchar(3);
+   declare sn tinyint;
+   select id into company from t_company limit 1;
+   select concat(substring(first_name,1,1),substring(mid_name,1,1),substring(last_name,1,1)) into insp from t_insp where inspid = new.inspid ;
+   select depid into dep from t_insp where inspid = new.inspid ; 
+   select count(*) into sn from t_samples where projid = new.projid ;
+    
+    set new.id = concat(company,':',cast(insp as varchar(5)),dep ,substring(YEAR(CURDATE()),3),cast(new.projid as varchar(5))) ;
+    set new.sn = sn+1 ;
+ end;
 
-
-/*    end triggers*/
-
+--      end triggers
 use fdl_proj;
-/* projects documents*/
-create table  t_projdoc 
+--   projects documents
+create table  fdl_proj.t_projdoc 
     (
         id integer not null auto_increment primary key,
         projid int not null,
         caption varchar(45),
+        section varchar(1), -- S= for Samples , P= for project document
         img_type varchar(1), -- P photo , D doc
         img longblob,
         planid integer, 
@@ -721,8 +759,7 @@ create table  t_projdoc
     );
 
 use fdl_dlrs;
-
-/* cust doc */
+--   cust doc 
 create table t_custdocs (
         id int auto_increment not null primary key,
         custid int not null,
@@ -731,7 +768,7 @@ create table t_custdocs (
         foreign key (custid) references fdl.t_cust(custid) on update cascade on delete cascade
     );
 
-/* supplier doc */
+--   supplier doc 
 create table t_supdocs (
         id int auto_increment not null primary key,
         supid int not null,
