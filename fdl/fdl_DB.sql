@@ -274,8 +274,9 @@ create table fdl.t_proj (
     is_assign_insp varchar(3) default '000',
     is_insp_ticket varchar(1) default 'N' , -- N: nothing to do W:wait for ticket F:Finish job
     fee decimal(15,3), -- the fee sendit
-    is_send_frep varchar(1), -- is the final report was send it
-    issuing_approv varchar(5) default '00000', 
+    is_send_frep varchar(1) default 'N', -- Y = sendeit is the final report was send it
+    trans_docs varchar(5) defaul '00000', -- insp|dep|tech|ACC|GM 
+    issuing_approv varchar(5) default '00000', -- insp|dep|tech|ACC|GM
     foreign key (commodity) references h_commodity(comid) on update cascade,
     foreign key (supid) references t_sup(supid) on update cascade on delete cascade,
     foreign key (cntryid) references h_country(cntryid) on update cascade on delete cascade,
@@ -483,6 +484,7 @@ create table fdl.t_daily_report
     (
         inspid int not null,
         projid int not null,
+        depid varchar(2),
         hotel_tel varchar(20),
         hotel_fax varchar(20),
         room_no varchar(20),
@@ -761,6 +763,19 @@ create trigger smapl_id before insert on fdl.t_samples for each row
     set new.id = concat(company,':',cast(insp as varchar(5)),dep ,substring(YEAR(CURDATE()),3),cast(new.projid as varchar(5))) ;
     set new.sn = sn+1 ;
  end;
+
+ create trigger set_depid_i before insert  on fdl.t_daily_report for each row
+    begin
+      declare dep varchar(2);
+      select depid into dep from fdl.t_insp where inspid = new.inspid ;
+      set new.depid = dep ;
+    end;
+ create trigger set_depid_u before update  on fdl.t_daily_report for each row
+    begin
+      declare dep varchar(2);
+      select depid into dep from fdl.t_insp where inspid = new.inspid ;
+      set new.depid = dep ;
+    end;
 
 --      end triggers
 use fdl_proj;
