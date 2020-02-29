@@ -68,7 +68,6 @@ create table fdl.t_company (
  );
 
 INSERT  INTO fdl.t_company (id )VALUES( 'AIC');
-
 --   department list for inspector select
 create table fdl.h_dep (
   depid char(2) not null primary key, --   mt,fd,md,pd 
@@ -238,6 +237,7 @@ create table fdl.t_mproj (
 
 --   projects  
 create table fdl.t_proj (
+    approv_hold varchar(3) default '000', -- dep = 100 , thec = 110 , gm= 111
     projid int auto_increment not null primary key,
     code varchar(225) UNIQUE,
     projname varchar(225),
@@ -273,6 +273,9 @@ create table fdl.t_proj (
     is_f_fax_ok tinyint , -- is first fax send it 0= No 1 = Yes 
     is_assign_insp varchar(3) default '000',
     is_insp_ticket varchar(1) default 'N' , -- N: nothing to do W:wait for ticket F:Finish job
+    fee decimal(15,3), -- the fee sendit
+    is_send_frep varchar(1), -- is the final report was send it
+    issuing_approv varchar(5) default '00000', 
     foreign key (commodity) references h_commodity(comid) on update cascade,
     foreign key (supid) references t_sup(supid) on update cascade on delete cascade,
     foreign key (cntryid) references h_country(cntryid) on update cascade on delete cascade,
@@ -282,6 +285,8 @@ create table fdl.t_proj (
 
 --   evaluation of the operations of the inspector 
 create table fdl.t_inspprocass(
+    hold_insp  tinyint default 0 , -- 1 = Hold of inspection 
+    confirmed tinyint default 0 , -- 1 = confirmed , 0=not confirmed
     procdate date not null,
     insp_type char(1), --   p = personal , s = subcontract 
     is_boss char(1),
@@ -383,7 +388,6 @@ create table fdl.t_inspplann (
  );
 
 --   [  Document tables  ] 
-
 --   company docs 
 create table fdl.t_companydocs (
     id int not null auto_increment primary key,
@@ -395,8 +399,6 @@ create table fdl.t_companydocs (
  );
 
 --   [ New Document tables  ] 
-
-
 --   documents table 
 create table fdl.t_inspformdocs (
     id int auto_increment not null primary key,
@@ -542,7 +544,6 @@ CREATE TABLE fdl.s_users (
     );
 
 alter table fdl.s_users add userphoto longblob, add inspid int, add issuing_certi VARCHAR(1) default 'N', add control_certi varchar(1) default 'N' ;
-
 create table fdl.s_logs(
     `login` varchar(225) not null,
     login_time timestamp not null default current_timestamp ,
@@ -607,7 +608,8 @@ CREATE TABLE fdl.s_groups_apps (
 
 
 --  [----------  End Secuirty Area-----]
---    CREATE VIEW 
+--
+--    [ CREATE VIEW ] ---- 
 create view v_login AS
     SELECT  
             priv_admin						, --  0
@@ -625,7 +627,7 @@ create view v_login AS
     UNION
     SELECT  "N"				AS priv_admin	, --  0													
             isactive 		AS active 		, --  1
-            fullname 		AS name			, --  2  
+            concat(first_name,' ',mid_name,' ',last_name) 		AS fullname		, --  2  
             email							, --  3 
             inspphoto 		AS photo		, --  4 
             issuing_certi					, --  5 
@@ -634,8 +636,25 @@ create view v_login AS
             inspid			  	  			, --  8
             loginname       AS login        , -- 9
             loginpassword   AS pswd	        	 						
-    FROM    fdl.t_insp ;	
- --    END CREAT VIEW
+    FROM    fdl.t_insp ;
+
+    create view v_proj as
+        (
+            SELECT m.mprjid ,m.code as mproj_code,m.depid,m.projname as mproj_name,m.lcreditno,m.subjpurchorderno,m.ms,m.totalaccred,m.qyagrosswt,m.qyanetwt,
+            p.approv_hold ,p.projid ,p.code as proj_cod ,p.projname ,p.shipmentno ,p.shipmentvalue ,p.currency ,p.supid ,p.commodity ,p.vesselsname ,p.cntryid ,p.town ,p.origin_goods ,p.place_insp ,p.insp_date ,p.portdispach ,p.portdischarge ,p.loadfromdate ,p.loadtodate ,p.qyagrosswt as p_qyagrosswt ,p.qyanetwt as p_qyanetwt, p.totalaccred as p_totalaccred, p.mprojid ,p.bill_loading_no ,p.bill_loading_date ,p.invoice_no ,p.invoice_date ,p.total_packing ,p.l_c_nr ,p.pro_inv_no ,p.pro_inv_date ,p.isactive as proj_is_active ,p.conclusion ,p.is_f_fax_ok ,p.is_assign_insp ,p.is_insp_ticket ,p.fee ,p.is_send_frep ,p.issuing_approv, 
+            ss.hold_insp, ss.confirmed, ss.procdate, ss.insp_type as subcont_or_person , ss.is_boss, ss.whysub, ss.condation, ss.implimint, ss.timeing, ss.cooperation, ss.overall, ss.perioddays, ss.localprice, ss.externelprice, ss.remarks, ss.Approved, ss.arrive_date, ss.startdate, ss.meeting, ss.program_dates, ss.declared, ss.m_v, ss.bert_port, ss.lett_date, ss.cert_no, ss.vessel_owner, ss.call_sign, ss.flag, ss.loading_port, ss.imo_no, ss.cont_no, ss.cont_type, ss.cont_rej, ss.rej_reas, ss.cont_action, ss.cont_status, ss.ssc, ss.ma, ss.pq, ss.cc, ss.sample_standard,
+            i.inspid, i.insp_type, i.first_name, i.mid_name, i.last_name, i.passport, i.idcard, i.country, i.depid as insp_dep, i.qualiid, i.fld_exp, i.insp_exp, i.contid, i.mobile, i.email, i.fax, i.phone, i.donor, i.graddate, i.crdate, i.isactive as insp_is_active, i.inspphoto, i.loginname, i.loginpassword, i.issuing_certi 
+            from fdl.t_mproj m
+            left join fdl.t_proj p
+            on p.mprojid = m.mprjid
+            left join fdl.t_inspprocass ss
+            on ss.projid = p.projid
+            and p.isactive = 1
+            and ss.is_boss = 'Y'
+            left join fdl.t_insp i
+            on i.inspid = ss.inspid
+        );
+ --    [ END CREAT VIEW ] ---
 
 -- -------------- triggers -------
 create  trigger processplan
