@@ -250,7 +250,25 @@ UPDATE fdl.s_groups_apps
     WHERE 
         group_id = 1 ;
 
-
+insert into fdl.s_steps (id,act,txt,val,adm,tec,dep,insp,acc)
+values
+--   id     |act        |txt                                    | value           |admin  |tech|dep   |insp   |acc 
+    ( 1     ,'fax'      ,'send fax'                             ,'000000000000000','10'   ,'10','11'  ,'00'   ,'00'),       
+    ( 2     ,'assign'   , 'Inspectors assign'                   ,'000000000000000','10'   ,'10','11'  ,'00'   ,'00'),       
+    ( 3     ,'ticket'   ,'Ticket issuing'                       ,'000000000000000','10'   ,'10','10'  ,'00'   ,'11'),       
+    ( 4     ,'arrival'  ,'The arrival of the inspector'         ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 5     ,'meeting'  ,'Meeting Agenda Or Hold of inspection' ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 6     ,'declare'  ,'Declaration of responsibility'        ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 7     ,'daily'    ,'Daily reports'                        ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 8     ,'letter'   ,'Letter of permission'                 ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 9     ,'shipp'    ,'Shipping survey'                      ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 10    ,'fitnes'   ,'Certificate of fitness'               ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 11    ,'cont'     ,'Containers inspection report'         ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 12    ,'f_rep'    ,'Final Report'                         ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 13    ,'fee'      ,'Inspection fees'                      ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 14    ,'docs'     ,'Transference  Inspection docs'        ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00'),       
+    ( 15    ,'samples'  ,'Receipt of samples'                   ,'000000000000000','10'   ,'10','10'  ,'11'   ,'00');       
+     
 -- Country Data 
 INSERT INTO fdl.h_country (cntryID,cntryName ) VALUES 
     (	'TH'	,	'Thailand'	),

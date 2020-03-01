@@ -235,8 +235,11 @@ create table fdl.t_mproj (
     foreign key (depid) references fdl.h_dep(depid) on update cascade on delete cascade
  );
 
---   projects  
+--   projects
+
 create table fdl.t_proj (
+    steps varchar(20) default '000000000000000' , -- STEPS#=15 -> firstFax|assign|ticket|arrival|meeting|declaration|daily|letter|shiping|fitnes|cont|f_rep|fee|docs|Samples
+    -- STEPS : 1:DONE , 0:FINISH
     approv_hold varchar(3) default '000', -- dep = 100 , thec = 110 , gm= 111
     projid int auto_increment not null primary key,
     code varchar(225) UNIQUE,
@@ -275,7 +278,7 @@ create table fdl.t_proj (
     is_insp_ticket varchar(1) default 'N' , -- N: nothing to do W:wait for ticket F:Finish job
     fee decimal(15,3), -- the fee sendit
     is_send_frep varchar(1) default 'N', -- Y = sendeit is the final report was send it
-    trans_docs varchar(5) defaul '00000', -- insp|dep|tech|ACC|GM 
+    trans_docs varchar(5) default '00000', -- insp|dep|tech|ACC|GM 
     issuing_approv varchar(5) default '00000', -- insp|dep|tech|ACC|GM
     foreign key (commodity) references h_commodity(comid) on update cascade,
     foreign key (supid) references t_sup(supid) on update cascade on delete cascade,
@@ -607,7 +610,19 @@ CREATE TABLE fdl.s_groups_apps (
         foreign key (group_id) references s_groups (group_id) on delete cascade,
         foreign key (app_name) references s_apps (app_name) on delete cascade
     );
-
+create table fdl.s_steps
+(
+    id tinyint not null auto_increment primary key,
+    txt varchar(100),
+    act varchar(10) not null,
+    val varchar(20) not null ,
+    adm  varchar(5) default '00', 
+    gm  varchar(5) default '00', 
+    tec  varchar(5) default '00', 
+    dep  varchar(5) default '00', 
+    insp  varchar(5) default '00', 
+    acc  varchar(5) default '00', 
+);
 
 --  [----------  End Secuirty Area-----]
 --
@@ -725,9 +740,7 @@ create trigger unique_login_insp before insert on fdl.t_insp
     end if;
     end;
 
-create trigger groups_prevent_from_deletion
-    before delete on s_groups
-    for each row
+create trigger groups_prevent_from_deletion before delete on s_groups for each row
     begin
         if old.group_id < 11 then -- will only abort deletion for specified ids
             signal sqlstate '45000' -- "unhandled user-defined exception"
@@ -764,19 +777,27 @@ create trigger smapl_id before insert on fdl.t_samples for each row
     set new.sn = sn+1 ;
  end;
 
- create trigger set_depid_i before insert  on fdl.t_daily_report for each row
+create trigger set_depid_i before insert  on fdl.t_daily_report for each row
     begin
       declare dep varchar(2);
       select depid into dep from fdl.t_insp where inspid = new.inspid ;
       set new.depid = dep ;
     end;
- create trigger set_depid_u before update  on fdl.t_daily_report for each row
+create trigger set_depid_u before update  on fdl.t_daily_report for each row
     begin
-      declare dep varchar(2);
-      select depid into dep from fdl.t_insp where inspid = new.inspid ;
-      set new.depid = dep ;
+        declare dep varchar(2);
+        select depid into dep from fdl.t_insp where inspid = new.inspid ;
+        set new.depid = dep ;
     end;
-
+create trigger set_steps after update on fdl.t_inspprocass for each row
+    begin
+       declare txt varchar(20) ;
+        select steps into txt from fdl.t_proj where projid = new.projid ;
+        set txt = concat(substring(txt,1,1) , '1',substring(txt,3)) ;
+        if new.approved = '11' then
+            update fdl.t_proj set steps = txt where projid = new.projid ;
+        end if;
+    end;
 --      end triggers
 use fdl_proj;
 --   projects documents
