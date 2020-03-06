@@ -553,8 +553,7 @@ create table fdl.s_logs(
     `login` varchar(225) not null,
     login_time timestamp not null default current_timestamp ,
     ip  varchar(20),
-    primary key(`login`,login_time),
-    foreign key (`login`) references s_users(`login`) on update cascade on delete cascade
+    primary key(`login`,login_time) 
    );
 
 create table fdl.s_apps_sec
