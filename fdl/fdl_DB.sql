@@ -614,6 +614,7 @@ create table fdl.s_steps
     (
         id varchar(20) not null primary key,
         txt varchar(100),
+        txt1 varchar(100),
         act varchar(10) not null,
         adm  varchar(5) default '00', 
         gm  varchar(5) default '00', 

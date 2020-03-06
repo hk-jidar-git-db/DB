@@ -215,7 +215,7 @@ INSERT INTO fdl.s_groups (group_id, description, depid, issuing_certi) VALUES
     (6 , 'Drug and Medical Supplies Department'         , 'MD', 'N'),
     (7 , 'Oil and Oil Products Inspection Department'   , 'PD', 'N'),
     (8 , 'Food and Feed Department'                     , 'FD', 'N'),
-    (9 , 'Inspectores'                                  , NULL, 'N'),
+    (9 , 'Inspectores'                                  , NULL, 'N'), -- this record only use by inspectores
     (10, 'Certification print'                          , NULL, 'N');
     
 insert into fdl.s_users_groups (`login`,group_id)
@@ -250,24 +250,24 @@ UPDATE fdl.s_groups_apps
     WHERE 
         group_id = 1 ;
 
-insert into fdl.s_steps (id,act,txt,adm,gm,tec,dep,insp,acc)
+insert into fdl.s_steps (id,act,txt,txt1,adm,gm,tec,dep,insp,acc)
  values
- --   id                     |act        |txt                                    |admin  |gm   |tech|dep   |insp   |acc 
-    ( '000000000000000'     ,'fax'      ,'send fax'                             ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
-    ( '100000000000000'     ,'assign'   , 'Inspectors assign'                   ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
-    ( '110000000000000'     ,'ticket'   ,'Ticket issuing'                       ,'10'   ,'10' ,'10','10'  ,'00'   ,'00'),       
-    ( '111000000000000'     ,'arrival'  ,'The arrival of the inspector'         ,'10'   ,'10' ,'10','10'  ,'11'   ,'11'),       
-    ( '111100000000000'     ,'meeting'  ,'Meeting Agenda Or Hold of inspection' ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111110000000000'     ,'declare'  ,'Declaration of responsibility'        ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111000000000'     ,'daily'    ,'Daily reports'                        ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111100000000'     ,'letter'   ,'Letter of permission'                 ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111110000000'     ,'shipp'    ,'Shipping survey'                      ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111000000'     ,'fitnes'   ,'Certificate of fitness'               ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111100000'     ,'cont'     ,'Containers inspection report'         ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111110000'     ,'f_rep'    ,'Final Report'                         ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111111000'     ,'fee'      ,'Inspection fees'                      ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111111100'     ,'docs'     ,'Transference  Inspection docs'        ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111111110'     ,'samples'  ,'Receipt of samples'                   ,'10'   ,'10' ,'10','10'  ,'11'   ,'00');       
+ --   id                     |act       |txt                                    | txt1                          |admin  |gm   |tech|dep   |insp   |acc 
+    ( '000000000000000'     ,'fax'      ,'send fax'                             ,   'إرسال الفاكس'             ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
+    ( '100000000000000'     ,'assign'   ,'Inspectors assign'                    ,   'يعين المفتشون'          ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
+    ( '110000000000000'     ,'ticket'   ,'Ticket issuing'                       ,   'إصدار التذاكر'              ,'10'   ,'10' ,'10','10'  ,'00'   ,'00'),       
+    ( '111000000000000'     ,'arrival'  ,'The arrival of the inspector'         ,   'وصول المفتش'              ,'10'   ,'10' ,'10','10'  ,'11'   ,'11'),       
+    ( '111100000000000'     ,'meeting'  ,'Meeting Agenda Or Hold of inspection' ,   'اجتماع الاول'            ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111110000000000'     ,'declare'  ,'Declaration of responsibility'        ,   'إعلان المسؤولية'             ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111111000000000'     ,'daily'    ,'Daily reports'                        ,   'التقارير اليومية'        ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111111100000000'     ,'letter'   ,'Letter of permission'                 ,   'خطاب إذن'                ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111111110000000'     ,'shipp'    ,'Shipping survey'                      ,   'مسح الشحن'               ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111111111000000'     ,'fitnes'   ,'Certificate of fitness'               ,   'شهادة اللياقة البدنية'   ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111111111100000'     ,'cont'     ,'Containers inspection report'         ,   'تقرير تفتيش الحاويات'   ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111111111110000'     ,'f_rep'    ,'Final Report'                         ,   'التقرير الأخير'            ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111111111111000'     ,'fee'      ,'Inspection fees'                      ,   'رسوم التفتيش'             ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111111111111100'     ,'docs'     ,'Transference  Inspection docs'        ,   'مستندات فحص النقل'       ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( '111111111111110'     ,'samples'  ,'Receipt of samples'                   ,   'استلام العينات'           ,'10'   ,'10' ,'10','10'  ,'11'   ,'00');       
      
 -- Country Data 
 INSERT INTO fdl.h_country (cntryID,cntryName ) VALUES 
