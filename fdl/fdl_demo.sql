@@ -253,21 +253,24 @@ UPDATE fdl.s_groups_apps
 insert into fdl.s_steps (id,act,txt,txt1,adm,gm,tec,dep,insp,acc)
  values
  --   id                     |act       |txt                                    | txt1                          |admin  |gm   |tech|dep   |insp   |acc 
-    ( '000000000000000'     ,'fax'      ,'send fax'                             ,   'إرسال الفاكس'             ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
-    ( '100000000000000'     ,'assign'   ,'Inspectors assign'                    ,   'يعين المفتشون'          ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
-    ( '110000000000000'     ,'ticket'   ,'Ticket issuing'                       ,   'إصدار التذاكر'              ,'10'   ,'10' ,'10','10'  ,'00'   ,'00'),       
-    ( '111000000000000'     ,'arrival'  ,'The arrival of the inspector'         ,   'وصول المفتش'              ,'10'   ,'10' ,'10','10'  ,'11'   ,'11'),       
-    ( '111100000000000'     ,'meeting'  ,'Meeting Agenda Or Hold of inspection' ,   'اجتماع الاول'            ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111110000000000'     ,'declare'  ,'Declaration of responsibility'        ,   'إعلان المسؤولية'             ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111000000000'     ,'daily'    ,'Daily reports'                        ,   'التقارير اليومية'        ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111100000000'     ,'letter'   ,'Letter of permission'                 ,   'خطاب إذن'                ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111110000000'     ,'shipp'    ,'Shipping survey'                      ,   'مسح الشحن'               ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111000000'     ,'fitnes'   ,'Certificate of fitness'               ,   'شهادة اللياقة البدنية'   ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111100000'     ,'cont'     ,'Containers inspection report'         ,   'تقرير تفتيش الحاويات'   ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111110000'     ,'f_rep'    ,'Final Report'                         ,   'التقرير الأخير'            ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111111000'     ,'fee'      ,'Inspection fees'                      ,   'رسوم التفتيش'             ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111111100'     ,'docs'     ,'Transference  Inspection docs'        ,   'مستندات فحص النقل'       ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ( '111111111111110'     ,'samples'  ,'Receipt of samples'                   ,   'استلام العينات'           ,'10'   ,'10' ,'10','10'  ,'11'   ,'00');       
+    ( 1     ,'fax'      ,'send fax'                             ,   'إرسال الفاكس'             ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
+    ( 2     ,'assign'   ,'Inspectors assign'                    ,   'يعين المفتشون'          ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
+    ( 3     ,'approve'  ,'Approve insp by GM '                  ,   'اعتماد المفتش من المدير العام'          ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
+    ( 4     ,'approve'  ,'Approve insp by tech Manger '         ,   'اعتماد من قبل الادارة الفنية'          ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
+    ( 5     ,'ticket'   ,'Ticket issuing'                       ,   'إصدار التذاكر'              ,'10'   ,'10' ,'10','10'  ,'00'   ,'00'),       
+    ( 6     ,'arrival'  ,'The arrival of the inspector'         ,   'وصول المفتش'              ,'10'   ,'10' ,'10','10'  ,'11'   ,'11'),       
+    ( 7     ,'meeting'  ,'Meeting Agenda Or Hold of inspection' ,   'اجتماع الاول'            ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 8     ,'declare'  ,'Declaration of responsibility'        ,   'إعلان المسؤولية'             ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 9     ,'daily'    ,'Daily reports'                        ,   'التقارير اليومية'        ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 10    ,'letter'   ,'Letter of permission'                 ,   'خطاب إذن'                ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 11     ,'shipp'    ,'Shipping survey'                      ,   'مسح الشحن'               ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 12     ,'fitnes'   ,'Certificate of fitness'               ,   'شهادة اللياقة البدنية'   ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 13     ,'cont'     ,'Containers inspection report'         ,   'تقرير تفتيش الحاويات'   ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 14     ,'f_rep'    ,'Final Report'                         ,   'التقرير الأخير'            ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 15     ,'fee'      ,'Inspection fees'                      ,   'رسوم التفتيش'             ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 16     ,'docs'     ,'Transference  Inspection docs'        ,   'مستندات فحص النقل'       ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 17     ,'samples'  ,'Receipt of samples'                   ,   'استلام العينات'           ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
+    ( 18     ,'certifi'  ,'Certification'                         ,   'اصدار الشهادة'           ,'10'   ,'10' ,'10','10'  ,'11'   ,'00');       
      
 -- Country Data 
 INSERT INTO fdl.h_country (cntryID,cntryName ) VALUES 

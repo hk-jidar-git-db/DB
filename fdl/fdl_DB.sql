@@ -306,7 +306,7 @@ create table fdl.t_inspprocass(
     localprice decimal(10,3), -- local price
     externelprice decimal(10,3), -- external price
     remarks varchar(225),
-    Approved varchar(2) default '00', -- '10' approve by thechnical manager , '11' approve by general manager
+    approved varchar(2) default '00', -- '10' approve by thechnical manager , '11' approve by general manager
     -- ARRIVAL OF INSPECTOR
     arrive_date date, -- arriveing date 
     startdate date, -- after arriveing starting date
@@ -797,7 +797,17 @@ create trigger set_steps after update on fdl.t_inspprocass for each row
             update fdl.t_proj set steps = txt where projid = new.projid ;
         end if;
     end;
+
+ 
 --      end triggers
+
+--    [ Stored proceduers ] --
+
+
+-- [ End stored procedures]
+
+
+
 use fdl_proj;
 --   projects documents
 create table  fdl_proj.t_projdoc 
