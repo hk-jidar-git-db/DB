@@ -238,7 +238,7 @@ create table fdl.t_mproj (
 --   projects
 
 create table fdl.t_proj (
-    steps varchar(20) default '000000000000000' , -- STEPS#=15 -> firstFax|assign|ticket|arrival|meeting|declaration|daily|letter|shiping|fitnes|cont|f_rep|fee|docs|Samples
+    steps varchar(20) default '000000000000000' , -- STEPS#=15 -> firstFax|assign|approve by GM|Approve by Techic|ticket|arrival|meeting|declaration|daily|letter|shiping|fitnes|cont|f_rep|fee|docs|Samples|certification
     -- STEPS : 1:DONE , 0:FINISH
     approv_hold varchar(3) default '000', -- dep = 100 , thec = 110 , gm= 111
     projid int auto_increment not null primary key,
@@ -792,8 +792,12 @@ create trigger set_steps after update on fdl.t_inspprocass for each row
     begin
        declare txt varchar(20) ;
         select steps into txt from fdl.t_proj where projid = new.projid ;
-        set txt = concat(substring(txt,1,1) , '1',substring(txt,3)) ;
-        if new.approved = '11' then
+        if new.approved = '10' then
+             -- |1-fax | 2-assign|3-approv tech|4-approve gm|
+            set txt = concat(substring(txt,1,2) , '1',substring(txt,4)) ;
+            update fdl.t_proj set steps = txt where projid = new.projid ;
+        else if new.approved = '11' then 
+            set txt = concat(substring(txt,1,3) , '1',substring(txt,5)) ;
             update fdl.t_proj set steps = txt where projid = new.projid ;
         end if;
     end;
