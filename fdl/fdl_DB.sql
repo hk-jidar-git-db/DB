@@ -120,7 +120,10 @@ create table fdl.t_sup (
     supname varchar(225) unique,
     sup_address varchar(225),
     country char(2),
-    web varchar(225) 
+    web varchar(225),
+    email varchar(225),
+    fax varchar(20),
+    tel varchar(20) 
  );
  create table fdl.t_sup_contacts (
      id int auto_increment not null primary key,
@@ -611,7 +614,7 @@ CREATE TABLE fdl.s_groups_apps (
     );
 create table fdl.s_steps
     (
-        id varchar(20) not null primary key,
+        id int not null auto_increment primary key,
         txt varchar(100),
         txt1 varchar(100),
         act varchar(10) not null,
@@ -792,14 +795,14 @@ create trigger set_steps after update on fdl.t_inspprocass for each row
     begin
        declare txt varchar(20) ;
         select steps into txt from fdl.t_proj where projid = new.projid ;
-        if new.approved = '10' then
+        IF (new.approved = '10') then
              -- |1-fax | 2-assign|3-approv tech|4-approve gm|
             set txt = concat(substring(txt,1,2) , '1',substring(txt,4)) ;
             update fdl.t_proj set steps = txt where projid = new.projid ;
-        else if new.approved = '11' then 
+        ELSEIF (new.approved = '11') then 
             set txt = concat(substring(txt,1,3) , '1',substring(txt,5)) ;
             update fdl.t_proj set steps = txt where projid = new.projid ;
-        end if;
+        END IF;
     end;
 
  
