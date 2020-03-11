@@ -239,7 +239,6 @@ create table fdl.t_mproj (
  );
 
 --   projects
-
 create table fdl.t_proj (
     steps varchar(20) default '000000000000000' , -- STEPS#=15 -> firstFax|assign|approve by GM|Approve by Techic|ticket|arrival|meeting|declaration|daily|letter|shiping|fitnes|cont|f_rep|fee|docs|Samples|certification
     -- STEPS : 1:DONE , 0:FINISH
@@ -346,7 +345,7 @@ create table fdl.t_inspprocass(
     primary key (projid,inspid),
     foreign key (inspid) references t_insp(inspid) on update cascade on delete cascade,
     foreign key (projid) references t_proj(projid) on update cascade on delete cascade
-);
+ );
 -- SAMPLES VERIFIED, ANALYSED AND TESTED
 -- The sample could be, raw material, finished product, , document, record, drawing, And/or etc.
 create table fdl.t_samples
@@ -539,7 +538,7 @@ create table fdl.t_ship_survey -- SHIPPING SURVEY
 
 
 --  -------------  Secuirty Area --
-CREATE TABLE fdl.s_users (
+create table fdl.s_users (
         `login` VARCHAR(255) NOT NULL,
         pswd VARCHAR(255) NOT NULL,
         `name` VARCHAR(64),
@@ -551,55 +550,45 @@ CREATE TABLE fdl.s_users (
         PRIMARY KEY (`login`)
     );
 
-alter table fdl.s_users add userphoto longblob, add inspid int, add issuing_certi VARCHAR(1) default 'N', add control_certi varchar(1) default 'N' ;
 create table fdl.s_logs(
     `login` varchar(225) not null,
     login_time timestamp not null default current_timestamp ,
     ip  varchar(20),
     primary key(`login`,login_time) 
    );
-
 create table fdl.s_apps_sec
     (
         id tinyint not null primary key auto_increment,
         section varchar(225)
     );
-
-CREATE TABLE fdl.s_apps 
+create table fdl.s_apps 
     (
         app_name VARCHAR(128) NOT NULL,
         app_type VARCHAR(255),
         `description` VARCHAR(255),
         PRIMARY KEY (app_name)
     );
-
-alter  table fdl.s_apps add section tinyint ;
-CREATE TABLE fdl.s_apps_desc 
+create table fdl.s_apps_desc 
     (
         app_name VARCHAR(128) NOT NULL,
         ar VARCHAR(128) NOT NULL,
         en VARCHAR(128) NOT NULL,
         PRIMARY KEY (app_name)
     );
-
-
-
-CREATE TABLE fdl.s_groups (
+create table fdl.s_groups (
     group_id int(11) NOT NULL AUTO_INCREMENT,
     `description` varchar(255) DEFAULT NULL, 
     PRIMARY KEY (group_id) ,
     UNIQUE KEY description (description)
     );
-alter table fdl.s_groups add depid varchar(2),add issuing_certi VARCHAR(1) default 'N', add control_certi varchar(1) default 'N' ;
-CREATE TABLE fdl.s_users_groups (
+create table fdl.s_users_groups (
         `login` VARCHAR(255) NOT NULL,
         group_id int(11) NOT NULL,
         PRIMARY KEY (login, group_id),
         foreign key (`login`) references s_users (`login`) on delete cascade,
         foreign key (group_id) references s_groups (group_id) on delete cascade
     );
-
-CREATE TABLE fdl.s_groups_apps (
+create table fdl.s_groups_apps (
         group_id    int(11) NOT NULL,
         app_name    VARCHAR(128) NOT NULL,
         priv_access VARCHAR(1),
@@ -611,13 +600,27 @@ CREATE TABLE fdl.s_groups_apps (
         PRIMARY KEY (group_id, app_name),
         foreign key (group_id) references s_groups (group_id) on delete cascade,
         foreign key (app_name) references s_apps (app_name) on delete cascade
+    );    
+-- modified secuerty system
+alter table fdl.s_users add userphoto longblob, add inspid int, add issuing_certi VARCHAR(1) default 'N', add control_certi varchar(1) default 'N' ;
+alter table fdl.s_apps add section tinyint ;
+alter table fdl.s_groups add  issuing_certi VARCHAR(1) default 'N', add control_certi varchar(1) default 'N' ;
+create table fdl.s_users_dep (
+        `login` VARCHAR(255) NOT NULL,
+        depid varchar(2) NOT NULL,
+        PRIMARY KEY (login, depid),
+        foreign key (`login`) references s_users (`login`) on delete cascade,
+        foreign key (depid) references fdl.h_dep (depid) on delete cascade
     );
+
+
 create table fdl.s_steps
     (
         id int not null auto_increment primary key,
         txt varchar(100),
         txt1 varchar(100),
         act varchar(10) not null,
+        roles int,
         adm  varchar(5) default '00', 
         gm  varchar(5) default '00', 
         tec  varchar(5) default '00', 
@@ -804,8 +807,27 @@ create trigger set_steps after update on fdl.t_inspprocass for each row
             update fdl.t_proj set steps = txt where projid = new.projid ;
         END IF;
     end;
+    
+create trigger set_dep_users_i after insert on fdl.s_users_dep for each row
+    begin
+    declare grp int;
+    select count(*) into grp from fdl.s_users_groups where `login` = new.`login` and group_id = 5 ;
+    IF grp = 0 THEN
+    insert into s_users_groups (`login`,group_id) values (new.`login` , 5);
+    END IF;
+    end;
 
+use fdl; 
  
+create trigger set_dep_users_d after delete on fdl.s_users_dep for each row
+    begin
+    declare dep int;
+      select count(*) into dep from fdl.s_users_dep where `login` = old.`login` ;
+      IF dep = 0 && dep > 0 THEN
+        delete  from s_users_groups where `login` = old.`login` and group_id = 5 ;
+      END IF;
+    end;
+   
 --      end triggers
 
 --    [ Stored proceduers ] --

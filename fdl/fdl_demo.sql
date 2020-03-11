@@ -195,41 +195,32 @@ INSERT INTO fdl.t_inspForms (
 -- data -----
 insert into fdl.s_users (login,pswd,name,email,active,activation_code,priv_admin,userphoto,issuing_certi,control_certi)
     values  
-    ('admin',md5('123'),'Welbie'    ,'hk.jidar@gmail.com','Y','','Y',null,'N','Y'),
-    ( 'thec',md5('123'),'fathi'     ,'fathi@gmail.com','Y','','N',null,'Y','N'),
-    (   'fd',md5('123'),'Corie'     ,'cogers1@hubpages.com','Y','','N',null,'N','N'),
-    ( 'acc',md5('123'),'ibrahim'     ,'ibrahim@yahoo.com','Y','','N',null,'N','Y'),
-    (   'mt',md5('123'),'Grenville' ,'glamdin2@gravatar.com','Y','','N',null,'N','N'),
-    (   'md',md5('123'),'Nevin'     ,'nfullalove3@liveinternet.ru','Y','','N',null,'N','N'),
-    (   'pd',md5('123'),'peter'     ,'peter@oil_gas.com','Y','','N',null,'N','N'),
-    (   'gm',md5('123'),'Corilla'   ,'cgalway4@gov.uk','Y','','N',null,'N','N'),
-    ( 'insp',md5('123'),'Alvie'     ,'amcturley5@gnu.org','Y','','N',null,'N','N'),
-    ( 'mix' ,md5('123'),'Leo'        ,'lsaing6@narod.ru','Y','','N',null,'N','N');
+    ('admin',md5('123'),'Welbie'    ,'hk.jidar@gmail.com'           ,'Y','','Y',null,'N','Y'),
+    ( 'thec',md5('123'),'fathi'     ,'fathi@gmail.com'              ,'Y','','N',null,'Y','N'),
+    (   'fd',md5('123'),'Corie'     ,'cogers1@hubpages.com'         ,'Y','','N',null,'N','N'),
+    (  'acc',md5('123'),'ibrahim'   ,'ibrahim@yahoo.com'            ,'Y','','N',null,'N','Y'),
+    (  'dep',md5('123'),'Grenville' ,'glamdin2@gravatar.com'        ,'Y','','N',null,'N','N'),
+    ( 'insp',md5('123'),'Alvie'     ,'amcturley5@gnu.org'           ,'Y','','N',null,'N','N'),
+    (  'mix',md5('123'),'Leo'       ,'lsaing6@narod.ru'             ,'Y','','N',null,'N','N');
 
-INSERT INTO fdl.s_groups (group_id, description, depid, issuing_certi) VALUES
-    (1 , 'Administrator'                                , NULL, 'Y'),
-    (2 , 'General Director'                             , NULL, 'Y'),
-    (3 , 'Technical Manager'                            , NULL, 'N'),
-    (4 , 'Financial and administrative'                 , NULL, 'N'),
-    (5 , 'General Materials Department'                 , 'MT', 'N'),
-    (6 , 'Drug and Medical Supplies Department'         , 'MD', 'N'),
-    (7 , 'Oil and Oil Products Inspection Department'   , 'PD', 'N'),
-    (8 , 'Food and Feed Department'                     , 'FD', 'N'),
-    (9 , 'Inspectores'                                  , NULL, 'N'), -- this record only use by inspectores
-    (10, 'Certification print'                          , NULL, 'N');
+INSERT INTO fdl.s_groups (group_id, description,   issuing_certi) VALUES
+    (1 ,'Administrator'                                , 'Y'),
+    (2 ,'General Director'                             , 'Y'),
+    (3 ,'Technical Manager'                            , 'N'),
+    (4 ,'Financial and administrative'                 , 'N'),
+    (5 ,'technical departments'                        , 'N'),
+    (6 ,'Inspectores'                                  , 'N'), -- this record only use by inspectores
+    (7 ,'Certification print'                          , 'N');
     
 insert into fdl.s_users_groups (`login`,group_id)
     values
     ('admin',1),
-    (   'gm',2),
-    ( 'thec',3),
+    ( 'thec',2),
+    (   'fd',3),
     (  'acc',4),
-    (   'mt',5),
-    (   'md',6),
-    (   'pd',7),
-    (   'fd',8),
-    ( 'insp',9),
-    ( 'mix' ,10);
+    (  'dep',5),
+    ( 'insp',6),
+    (  'mix',7);
 UPDATE fdl.s_groups_apps 
     SET 
         priv_access =   'N',
@@ -250,28 +241,28 @@ UPDATE fdl.s_groups_apps
     WHERE 
         group_id = 1 ;
 
-insert into fdl.s_steps (act,txt,txt1,adm,gm,tec,dep,insp,acc)
+insert into fdl.s_steps (act,txt,roles,adm,gm,tec,dep,insp,acc,txt1)
  values
- --   act        |txt                                    | txt1                          |admin  |gm   |tech|dep   |insp   |acc 
-    ('fax'      ,'send fax'                             ,   'إرسال الفاكس'             ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
-    ('assign'   ,'Inspectors assign'                    ,   'يعين المفتشون'          ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
-    ('approve'  ,'Approve insp by tech Manger '         ,   'اعتماد من قبل الادارة الفنية'          ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
-    ('approve'  ,'Approve insp by GM '                  ,   'اعتماد المفتش من المدير العام'          ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
-    ('E-insp'   ,'Send E-mail to supplier about insp'   ,   'ارسال ايميل للبائع عن المفتش'          ,'10'   ,'10' ,'10','11'  ,'00'   ,'00'),       
-    ('ticket'   ,'Ticket issuing'                       ,   'إصدار التذاكر'              ,'10'   ,'10' ,'10','10'  ,'00'   ,'00'),       
-    ('arrival'  ,'The arrival of the inspector'         ,   'وصول المفتش'              ,'10'   ,'10' ,'10','10'  ,'11'   ,'11'),       
-    ('meeting'  ,'Meeting Agenda Or Hold of inspection' ,   'اجتماع الاول'            ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('declare'  ,'Declaration of responsibility'        ,   'إعلان المسؤولية'             ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('daily'    ,'Daily reports'                        ,   'التقارير اليومية'        ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('letter'   ,'Letter of permission'                 ,   'خطاب إذن'                ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('shipp'    ,'Shipping survey'                      ,   'مسح الشحن'               ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('fitnes'   ,'Certificate of fitness'               ,   'شهادة اللياقة البدنية'   ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('cont'     ,'Containers inspection report'         ,   'تقرير تفتيش الحاويات'   ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('f_rep'    ,'Final Report'                         ,   'التقرير الأخير'            ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('fee'      ,'Inspection fees'                      ,   'رسوم التفتيش'             ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('docs'     ,'Transference  Inspection docs'        ,   'مستندات فحص النقل'       ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('samples'  ,'Receipt of samples'                   ,   'استلام العينات'           ,'10'   ,'10' ,'10','10'  ,'11'   ,'00'),       
-    ('certifi'  ,'Certification'                         ,   'اصدار الشهادة'           ,'10'   ,'10' ,'10','10'  ,'11'   ,'00');       
+ --   act        |txt                                   |roles      |admin  |gm   |tech|dep   |insp   |acc  |txt1
+    ('fax'      ,'send fax'                             , 'dep'     ,'10'   ,'10' ,'10','11'  ,'00'   ,'00' ,'إرسال الفاكس'                 ),       
+    ('assign'   ,'Inspectors assign'                    , 'dep'     ,'10'   ,'10' ,'10','11'  ,'00'   ,'00' ,'يعين المفتشون'                ),       
+    ('approve'  ,'Approve insp by tech Manger '         , 'tec'     ,'10'   ,'10' ,'10','11'  ,'00'   ,'00' ,'اعتماد من قبل الادارة الفنية' ),       
+    ('approve'  ,'Approve insp by GM '                  , 'gm'      ,'10'   ,'10' ,'10','11'  ,'00'   ,'00' ,'اعتماد المفتش من المدير العام'),       
+    ('E-insp'   ,'Send E-mail to supplier about insp'   , 'dep'     ,'10'   ,'10' ,'10','11'  ,'00'   ,'00' ,'ارسال ايميل للبائع عن المفتش' ),       
+    ('ticket'   ,'Ticket issuing'                       , 'acc'     ,'10'   ,'10' ,'10','10'  ,'00'   ,'00' ,'إصدار التذاكر'                ),       
+    ('arrival'  ,'The arrival of the inspector'         , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'11' ,'وصول المفتش'                  ),       
+    ('meeting'  ,'Meeting Agenda Or Hold of inspection' , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'اجتماع الاول'                 ),       
+    ('declare'  ,'Declaration of responsibility'        , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'إعلان المسؤولية'              ),       
+    ('daily'    ,'Daily reports'                        , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'التقارير اليومية'             ),       
+    ('letter'   ,'Letter of permission'                 , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'خطاب إذن'                     ),       
+    ('shipp'    ,'Shipping survey'                      , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'مسح الشحن'                    ),       
+    ('fitnes'   ,'Certificate of fitness'               , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'شهادة اللياقة البدنية'        ),       
+    ('cont'     ,'Containers inspection report'         , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'تقرير تفتيش الحاويات'         ),       
+    ('f_rep'    ,'Final Report'                         , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'التقرير الأخير'               ),       
+    ('fee'      ,'Inspection fees'                      , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'رسوم التفتيش'                 ),       
+    ('docs'     ,'Transference  Inspection docs'        , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'مستندات فحص النقل'            ),       
+    ('samples'  ,'Receipt of samples'                   , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' ,'استلام العينات'               ),       
+    ('certifi'  ,'Certification'                        , 'insp'    ,'10'   ,'10' ,'10','10'  ,'11'   ,'00' , 'اصدار الشهادة'               );       
      
 -- Country Data 
 INSERT INTO fdl.h_country (cntryID,cntryName ) VALUES 
